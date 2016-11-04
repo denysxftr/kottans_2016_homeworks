@@ -3,17 +3,18 @@ class Fibonacci
   include Enumerable
 
   def initialize(n)
-    @sequence = []
-    (1..n).each { |i| @sequence << fibonacci(i) }
+    @n = n
   end
 
   def each
-    0.upto(@sequence.length - 1) { |x| yield @sequence[x] }
-  end
-
-  private
-
-  def fibonacci(n)
-    n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2)
+    1.upto(@n) do |i|
+      if i == 1
+        yield i
+      else
+        fibo, fibo_prev = 1, 1
+        (2...i).each { fibo, fibo_prev = fibo + fibo_prev, fibo }
+        yield fibo
+      end
+    end
   end
 end
