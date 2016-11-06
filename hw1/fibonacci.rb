@@ -6,25 +6,13 @@ class Fibonacci
 	end
 
 	def each
-		sequence = Array.new
-		sequence << 0 if @n == 0
-		if @n > 1 
-			sequence << 1
-			@n -= 1
-		end
-
   	x, y = 0, 1
 
-	  (1..@n).map do
+	  @n.times do
 	    z = (x + y)
 	    x = y
 	    y = z
-	    sequence << y.to_s
+	  	yield x
 	  end
-	  sequence.map(&:to_s)
-	end
-
-	def map
-		each
 	end
 end
