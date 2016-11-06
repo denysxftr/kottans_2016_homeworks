@@ -1,4 +1,4 @@
-require './hw1/fibonacci'
+require_relative 'fibonacci'
 
 def assert(expect:, to_equal: true, text:)
   if expect == to_equal
