@@ -14,18 +14,13 @@ class Fibonacci
   end
 
   def each
-    fibo.each { |f| yield(f) }
-  end
-
-  private
-
-  def fibo
-    base = [1, 1]
-    return [1] if quantity == 1
-    return base if quantity == 2
-    (quantity - 2).times do |q|
-      base.push(base[q] + base[q + 1])
+    previous = 1
+    two_steps_before = 1
+    quantity.times do |index|
+      current = index < 2 ? 1 : (previous + two_steps_before)
+      two_steps_before = previous
+      previous = current
+      yield(current)
     end
-    base
   end
 end
