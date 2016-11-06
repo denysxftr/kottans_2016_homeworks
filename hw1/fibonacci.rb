@@ -1,5 +1,3 @@
-require 'rubygems'
-
 class Fibonacci
 
 	include Enumerable
