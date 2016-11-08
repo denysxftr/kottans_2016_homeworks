@@ -12,5 +12,6 @@ class Fibonacci
       break if fibs.length == @length
       fibs << fibs.last(2).reduce(:+)
     end
+    fibs
   end
 end
