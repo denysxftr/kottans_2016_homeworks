@@ -17,11 +17,22 @@ RSpec.describe Router do
   end
 
   context 'when request is GET' do
-    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
+    context 'to defined routes' do
+      let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
 
-    it 'matches request' do
-      expect(subject.call(env)).to eq [200, {}, ['get test']]
+      it 'matches request' do
+        expect(subject.call(env)).to eq [200, {}, ['get test']]
+      end
     end
+
+    context 'to undefined routes' do
+      let(:unknown_env) { {'REQUEST_PATH' => '/wut', 'REQUEST_METHOD' => 'GET'} }
+
+      it 'returns 404 for unknown routes' do
+        expect(subject.call(unknown_env)).to eq [404, {}, ['not found']]
+      end
+    end
+
   end
 
   context 'when request is POST' do
