@@ -2,8 +2,8 @@ class Fibonacci
   attr_reader :result_array
   include Enumerable
 
-  def each()
-    (1..result_array.size).each_with_index{ |_, i| yield(result_array[i]) }
+  def each
+    result_array.each{ |item| yield item }
     self
   end
 
@@ -14,8 +14,11 @@ class Fibonacci
     raise ArgumentError, "Expected argument >= 1. Got #{length}" if length < 1
 
     a = b = 1
-    @result_array = []
-    (1..length).each{ @result_array << a; a, b = b, a; b += a;  }
-    @result_array
+    @result_array = (1..length).inject([]) do |result|
+      result << a
+      a, b = b, a
+      b += a
+      result
+    end
   end
 end
