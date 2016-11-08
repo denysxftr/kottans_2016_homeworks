@@ -1,6 +1,6 @@
-RSpec.describe Router do
+RSpec.describe Router::Base do
   subject do
-    Router.new do
+    Router::Base.new do
       get '/test', ->(_env) { [200, {}, ['get test']] }
       post '/test', ->(_env) { [200, {}, ['post test']] }
 
@@ -42,7 +42,8 @@ RSpec.describe Router do
 
     it 'renders 404', :focus do
       envs.each do |env|
-        expect(subject.call(env)).to eq [404, {}, ['Ooops! We have not found:(']]
+        expect(subject.call(env))
+          .to eq [404, {}, ['Ooops! We have not found:(']]
       end
     end
   end
