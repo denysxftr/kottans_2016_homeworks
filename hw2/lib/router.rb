@@ -1,21 +1,21 @@
+# Mathes HTTP request to a specific rack app
 class Router
   def call(env)
+    p env
     @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
   end
 
-private
+  private
 
   def initialize(&block)
     @routes = {}
     instance_exec(&block)
   end
 
-  def get(path, rack_app)
-    match('GET', path, rack_app)
-  end
-
-  def post(path, rack_app)
-    match('POST', path, rack_app)
+  %i(get post put patch update delete).each do |http_method|
+    define_method http_method do |path, rack_app|
+      match(http_method.to_s.upcase, path, rack_app)
+    end
   end
 
   def match(http_method, path, rack_app)
