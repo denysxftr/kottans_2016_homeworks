@@ -1,3 +1,4 @@
+# rubocop:disable all
 require './main'
 
 RSpec.configure do |config|

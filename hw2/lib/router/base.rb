@@ -1,4 +1,4 @@
-# Mathes HTTP request to a specific rack app
+# rubocop:disable Style/Documentation
 module Router
   class Base
     def initialize(&block)
@@ -7,7 +7,9 @@ module Router
     end
 
     def call(env)
-      (current(env) || not_found).call(env)
+      (current(env) || not_found).call(env).tap do |rack_app|
+        merge_current_params(env, rack_app)
+      end
     end
 
     private
@@ -28,11 +30,18 @@ module Router
     end
 
     def main_path(path)
-      path.split('/')[1]
+      path.split('/')[path.start_with?('/') ? 1 : 0]
     end
 
     def not_found
       ->(_env) { [404, {}, ['Ooops! We have not found:(']] }
+    end
+
+    def merge_current_params(env, rack_app)
+      path = env['REQUEST_PATH']
+      param = path.split('/')[path.start_with?('/') ? 2 : 1]
+      return unless param
+      rack_app[1] = rack_app[1].merge('POST_NAME' => param)
     end
   end
 end

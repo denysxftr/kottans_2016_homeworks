@@ -1,19 +1,10 @@
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Router::Base do
   subject do
     Router::Base.new do
       get '/test', ->(_env) { [200, {}, ['get test']] }
       post '/test', ->(_env) { [200, {}, ['post test']] }
       get '/posts/:name', ->(_env) { [200, {}, ['post show page']] }
-
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
-
     end
   end
 
@@ -53,22 +44,25 @@ RSpec.describe Router::Base do
     context 'with one parameter' do
       let(:envs) do
         [
-          { 'REQUEST_PATH' => '/posts/12', 'REQUEST_METHOD' => 'GET' },
-          { 'REQUEST_PATH' => '/posts/sample', 'REQUEST_METHOD' => 'GET' }
+          { 'REQUEST_PATH' => '/posts/about_ruby', 'REQUEST_METHOD' => 'GET' },
+          { 'REQUEST_PATH' => '/posts/43', 'REQUEST_METHOD' => 'GET' },
+          { 'REQUEST_PATH' => 'posts/43', 'REQUEST_METHOD' => 'GET' }
         ]
       end
 
       it 'will recognize it' do
         envs.each do |env|
-          expect(subject.call(env)).to eq [200, {}, ['post show page']]
+          expect(subject.call(env)[0]).to eq 200
+          expect(subject.call(env)[2]).to eq ['post show page']
         end
       end
 
-      # it 'will return passed parameter' do
-      #   envs.each do |env|
-      #     expect(['sample', 12]).to include(subject.call(env)[1]['POST_NAME'])
-      #   end
-      # end
+      it 'will return passed parameter' do
+        envs.each do |env|
+          expect(%w(about_ruby 43))
+            .to include(subject.call(env)[1]['POST_NAME'])
+        end
+      end
     end
 
     context 'with nested parameters' do
