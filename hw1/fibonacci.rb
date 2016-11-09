@@ -2,25 +2,22 @@ class Fibonacci
   include Enumerable
 
   def initialize(length)
-    if valid_length?(length)
-      @length = length
-    else
+    unless valid_length?(length)
       raise ArgumentError, "Sequence length isn't valid."
     end
+    @length = length
+    @array = Array.new(@length)
   end
 
   def each
-    previous = 1
+    previous = 0
     current = 1
     @length.times do |i|
-      if i < 2
-        yield 1
-      else
-        new_value = previous + current
-        previous, current = current, new_value
-        yield new_value
-      end
+      @array[i] = current
+      yield current
+      previous, current = current, previous + current
     end
+    @array
   end
 
   private
