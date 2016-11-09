@@ -7,9 +7,7 @@ module Router
     end
 
     def call(env)
-      current = @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
-      return not_found.call(env) unless current
-      current.call(env)
+      (current(env) || not_found).call(env)
     end
 
     private
@@ -22,7 +20,15 @@ module Router
 
     def match(http_method, path, rack_app)
       @routes[http_method] ||= {}
-      @routes[http_method][path] = rack_app
+      @routes[http_method][main_path path] = rack_app
+    end
+
+    def current(env)
+      @routes[env['REQUEST_METHOD']][main_path env['REQUEST_PATH']]
+    end
+
+    def main_path(path)
+      path.split('/')[1]
     end
 
     def not_found
