@@ -19,9 +19,14 @@ RSpec.describe Router do
   context 'when request is GET' do
     context 'to defined routes' do
       let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
+      let(:env_with_param) { { 'REQUEST_PATH' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET'} }
 
       it 'matches request' do
         expect(subject.call(env)).to eq [200, {}, ['get test']]
+      end
+
+      it 'matches route with named parameter' do
+        expect(subject.call(env_with_param)).to eq [200, {}, ['post show page']]
       end
     end
 
