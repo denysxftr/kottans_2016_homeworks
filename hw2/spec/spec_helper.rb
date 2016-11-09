@@ -1,4 +1,4 @@
-require './lib/router'
+require_relative '../main'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
