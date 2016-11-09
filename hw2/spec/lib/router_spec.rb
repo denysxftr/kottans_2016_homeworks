@@ -40,7 +40,7 @@ RSpec.describe Router::Base do
       ]
     end
 
-    it 'renders 404', :focus do
+    it 'renders 404' do
       envs.each do |env|
         expect(subject.call(env))
           .to eq [404, {}, ['Ooops! We have not found:(']]
