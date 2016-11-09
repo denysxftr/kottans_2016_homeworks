@@ -1,4 +1,4 @@
 Application = Router.new do
-  get '/test', ->(env) { [200, {}, ['get test']] }
-  post '/test', ->(env) { [200, {}, ['post test']] }
+  get '/test', ->(_) { [200, {}, ['get test']] }
+  post '/test', ->(_) { [200, {}, ['post test']] }
 end

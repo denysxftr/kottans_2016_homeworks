@@ -3,7 +3,7 @@ class Router
     @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
   end
 
-private
+  private
 
   def initialize(&block)
     @routes = {}
