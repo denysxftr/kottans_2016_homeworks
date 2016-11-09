@@ -16,32 +16,33 @@ RSpec.describe Router do
     end
   end
 
+  shared_examples 'handles requests to unknown routes' do
+    it 'returns 404 for unknown routes' do
+      expect(subject.call(unknown_env)).to eq [404, {}, ['not found']]
+    end
+  end
+
   context 'when request is GET' do
-    context 'to defined routes' do
-      let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
-      let(:env_with_param) { { 'REQUEST_PATH' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET'} }
+    include_examples 'handles requests to unknown routes'
 
-      it 'matches request' do
-        expect(subject.call(env)).to eq [200, {}, ['get test']]
-      end
+    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
+    let(:env_with_param) { { 'REQUEST_PATH' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET'} }
+    let(:unknown_env) { {'REQUEST_PATH' => '/wut', 'REQUEST_METHOD' => 'GET'} }
 
-      it 'matches route with named parameter' do
-        expect(subject.call(env_with_param)).to eq [200, {}, ['post show page']]
-      end
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['get test']]
     end
 
-    context 'to undefined routes' do
-      let(:unknown_env) { {'REQUEST_PATH' => '/wut', 'REQUEST_METHOD' => 'GET'} }
-
-      it 'returns 404 for unknown routes' do
-        expect(subject.call(unknown_env)).to eq [404, {}, ['not found']]
-      end
+    it 'matches route with named parameter' do
+      expect(subject.call(env_with_param)).to eq [200, {}, ['post show page']]
     end
-
   end
 
   context 'when request is POST' do
+    include_examples 'handles requests to unknown routes'
+
     let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'POST'} }
+    let(:unknown_env) { {'REQUEST_PATH' => '/wut', 'REQUEST_METHOD' => 'POST'} }
 
     it 'matches request' do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
