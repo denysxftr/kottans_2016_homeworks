@@ -7,7 +7,7 @@ module Router
     end
 
     def call(env)
-      (current(env) || not_found).call(env).tap do |rack_app|
+      current(env)[:rack_app].call(env).tap do |rack_app|
         merge_current_params(env, rack_app)
       end
     end
@@ -29,27 +29,22 @@ module Router
       @routes[env['REQUEST_METHOD']].each do |path, rack_app|
         path = path.split('/')
         current = root_path(env['REQUEST_PATH']).split('/')
-        next unless path.length == current.length
         next unless path[1] == current[1]
-        return rack_app
+        return { path: path, rack_app: rack_app }
       end
 
-      false
+      { rack_app: ->(_env) { [404, {}, ['Ooops! We have not found:(']] } }
     end
 
     def root_path(path)
       path.start_with?('/') ? path : path.prepend('/')
     end
 
-    def not_found
-      ->(_env) { [404, {}, ['Ooops! We have not found:(']] }
-    end
-
     def merge_current_params(env, rack_app)
-      path = env['REQUEST_PATH']
-      param = path.split('/')[2]
+      param = env['REQUEST_PATH'].split('/')[2]
       return unless param
-      rack_app[1] = rack_app[1].merge('POST_NAME' => param)
+      name = current(env)[:path][1..2].join('_').delete(':').upcase
+      rack_app[1] = rack_app[1].merge(name => param)
     end
   end
 end

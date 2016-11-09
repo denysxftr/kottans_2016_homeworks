@@ -62,7 +62,7 @@ RSpec.describe Router::Base do
       it 'will return passed parameter' do
         envs.each do |env|
           expect(%w(about_ruby 43))
-            .to include(subject.call(env)[1]['POST_NAME'])
+            .to include(subject.call(env)[1]['POSTS_NAME'])
         end
       end
     end
