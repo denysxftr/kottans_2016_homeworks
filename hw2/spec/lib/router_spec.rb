@@ -5,6 +5,8 @@ RSpec.describe Router::Base do
       get '/test', ->(_env) { [200, {}, ['get test']] }
       post '/test', ->(_env) { [200, {}, ['post test']] }
       get '/posts/:name', ->(_env) { [200, {}, ['post show page']] }
+      # get '/posts/:name/comments/:content',
+      #     ->(_env) { [200, {}, ['deep comment show page']] }
     end
   end
 
@@ -65,9 +67,23 @@ RSpec.describe Router::Base do
       end
     end
 
-    context 'with nested parameters' do
-      it 'will recognize it'
-      it 'will return passed parameters for nested route'
-    end
+    # context 'with nested parameters' do
+    #   let(:envs) do
+    #     [
+    #       { 'REQUEST_PATH' => '/posts/about_ruby', 'REQUEST_METHOD' => 'GET' },
+    #       { 'REQUEST_PATH' => '/posts/43', 'REQUEST_METHOD' => 'GET' },
+    #       { 'REQUEST_PATH' => 'posts/43', 'REQUEST_METHOD' => 'GET' }
+    #     ]
+    #   end
+    #
+    #   it 'will recognize it' do
+    #     envs.each do |env|
+    #       expect(subject.call(env)[0]).to eq 200
+    #       expect(subject.call(env)[2]).to eq ['post show page']
+    #     end
+    #   end
+    #
+    #   it 'will return passed parameters for nested route'
+    # end
   end
 end

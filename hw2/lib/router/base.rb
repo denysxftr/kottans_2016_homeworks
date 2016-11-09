@@ -22,15 +22,23 @@ module Router
 
     def match(http_method, path, rack_app)
       @routes[http_method] ||= {}
-      @routes[http_method][main_path path] = rack_app
+      @routes[http_method][root_path path] = rack_app
     end
 
     def current(env)
-      @routes[env['REQUEST_METHOD']][main_path env['REQUEST_PATH']]
+      @routes[env['REQUEST_METHOD']].each do |path, rack_app|
+        path = path.split('/')
+        current = root_path(env['REQUEST_PATH']).split('/')
+        next unless path.length == current.length
+        next unless path[1] == current[1]
+        return rack_app
+      end
+
+      false
     end
 
-    def main_path(path)
-      path.split('/')[path.start_with?('/') ? 1 : 0]
+    def root_path(path)
+      path.start_with?('/') ? path : path.prepend('/')
     end
 
     def not_found
@@ -39,7 +47,7 @@ module Router
 
     def merge_current_params(env, rack_app)
       path = env['REQUEST_PATH']
-      param = path.split('/')[path.start_with?('/') ? 2 : 1]
+      param = path.split('/')[2]
       return unless param
       rack_app[1] = rack_app[1].merge('POST_NAME' => param)
     end
