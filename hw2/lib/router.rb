@@ -1,6 +1,15 @@
 class Router
   def call(env)
-    @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
+      @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    else
+      if env['REQUEST_PATH'].include?('post')
+        match(env['REQUEST_METHOD'], env['REQUEST_PATH'], ->(env) { [200, {}, ['post show page']] })
+        @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+      else      
+        [404, {}, ['Not Found']]
+      end
+    end
   end
 
 private
