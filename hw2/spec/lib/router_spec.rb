@@ -5,8 +5,6 @@ RSpec.describe Router do
       post '/test', ->(env) { [200, {}, ['post test']] }
       get '/wrong_path',  ->(env) {[404, {}, ['Not found!']]}
       get /posts\/.*/, ->(env) { [200, {}, ['post show page']] }
-
-
     end
   end
 
@@ -35,7 +33,7 @@ RSpec.describe Router do
   end
 
   context 'Get request for post/:name' do
-    ['43','about_ruby'].each do |name|
+    ['43', 'about_ruby'].each do |name|
       let(:env) { { 'REQUEST_PATH' => "/posts/#{name}", 'REQUEST_METHOD' => 'GET'} }
 
       it 'matches request' do
