@@ -1,77 +1,40 @@
 RSpec.describe Router do
+  routes = [
+    { path: '/posts', expect: '/posts' },
+    { path: '/posts/:a', expect: '/posts/a' },
+    { path: '/posts/:a/ab', expect: '/posts/a/ab' },
+    { path: '/posts/:a/:b/:c', expect: '/posts/a/b/c' }
+  ]
+
   subject do
     Router.new do
-      get '/posts', ->(_) { [200, {}, ['get posts']] }
-      get '/posts/:id', ->(_) { [200, {}, ['show post']] }
-      post '/posts', ->(_) { [200, {}, ['create post']] }
-      patch '/posts/:id', ->(_) { [200, {}, ['update post']] }
-      put '/posts/:id', ->(_) { [200, {}, ['update post']] }
-      delete '/posts/:id', ->(_) { [200, {}, ['delete post']] }
+      routes.each do |route|
+        get route[:path], ->(_) { [200, {}, ["GET #{route[:expect]}"]] }
+        post route[:path], ->(_) { [200, {}, ["POST #{route[:expect]}"]] }
+        patch route[:path], ->(_) { [200, {}, ["PATCH #{route[:expect]}"]] }
+        put route[:path], ->(_) { [200, {}, ["PUT #{route[:expect]}"]] }
+        delete route[:path], ->(_) { [200, {}, ["DELETE #{route[:expect]}"]] }
+      end
     end
   end
 
-  context 'when request is GET' do
-    it 'matches /posts request' do
-      env = { 'REQUEST_PATH' => '/posts', 'REQUEST_METHOD' => 'GET' }
-      expect(subject.call(env)).to eq [200, {}, ['get posts']]
-    end
+  %w(GET POST PATCH PUT DELETE).each do |http_method|
+    context "when request is #{http_method}" do
+      routes.each do |route|
+        it "matches #{route[:path]} request" do
+          env = {
+            'REQUEST_PATH' => route[:expect],
+            'REQUEST_METHOD' => http_method
+          }
+          response = [200, {}, ["#{http_method} #{route[:expect]}"]]
+          expect(subject.call(env)).to eq(response)
+        end
+      end
 
-    it 'matches /posts/:id request' do
-      env = { 'REQUEST_PATH' => '/posts/123_a-b', 'REQUEST_METHOD' => 'GET' }
-      expect(subject.call(env)).to eq [200, {}, ['show post']]
-    end
-
-    it 'returns 404 if path not found' do
-      env = { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET' }
-      expect(subject.call(env)).to eq [404, {}, ['page not found']]
-    end
-  end
-
-  context 'when request is POST' do
-    it 'matches /posts request' do
-      env = { 'REQUEST_PATH' => '/posts', 'REQUEST_METHOD' => 'POST' }
-      expect(subject.call(env)).to eq [200, {}, ['create post']]
-    end
-
-    it 'returns 404 if path not found' do
-      env = { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'POST' }
-      expect(subject.call(env)).to eq [404, {}, ['page not found']]
-    end
-  end
-
-  context 'when request is PATCH' do
-    it 'matches /posts/:id request' do
-      env = { 'REQUEST_PATH' => '/posts/123_a-b', 'REQUEST_METHOD' => 'PATCH' }
-      expect(subject.call(env)).to eq [200, {}, ['update post']]
-    end
-
-    it 'returns 404 if path not found' do
-      env = { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'PATCH' }
-      expect(subject.call(env)).to eq [404, {}, ['page not found']]
-    end
-  end
-
-  context 'when request is PUT' do
-    it 'matches /posts/:id request' do
-      env = { 'REQUEST_PATH' => '/posts/123_a-b', 'REQUEST_METHOD' => 'PUT' }
-      expect(subject.call(env)).to eq [200, {}, ['update post']]
-    end
-
-    it 'returns 404 if path not found' do
-      env = { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'PUT' }
-      expect(subject.call(env)).to eq [404, {}, ['page not found']]
-    end
-  end
-
-  context 'when request is DELETE' do
-    it 'matches /posts/:id request' do
-      env = { 'REQUEST_PATH' => '/posts/123_a-b', 'REQUEST_METHOD' => 'DELETE' }
-      expect(subject.call(env)).to eq [200, {}, ['delete post']]
-    end
-
-    it 'returns 404 if path not found' do
-      env = { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'DELETE' }
-      expect(subject.call(env)).to eq [404, {}, ['page not found']]
+      it 'returns 404 if path not found' do
+        env = { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => http_method }
+        expect(subject.call(env)).to eq([404, {}, ['page not found']])
+      end
     end
   end
 end
