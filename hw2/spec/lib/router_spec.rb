@@ -3,16 +3,10 @@ RSpec.describe Router do
     Router.new do
       get '/test', ->(env) { [200, {}, ['get test']] }
       post '/test', ->(env) { [200, {}, ['post test']] }
+      get '/wrong_path',  ->(env) {[404, {}, ['Not found!']]}
+      get /posts\/.*/, ->(env) { [200, {}, ['post show page']] }
 
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
-      get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+
     end
   end
 
@@ -29,6 +23,24 @@ RSpec.describe Router do
 
     it 'matches request' do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
+    end
+  end
+
+  context 'GET request for wrong path' do
+    let(:env) { { 'REQUEST_PATH' => '/wrong_path', 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [404, {}, ['Not found!']]
+    end
+  end
+
+  context 'Get request for post/:name' do
+    ['43','about_ruby'].each do |name|
+      let(:env) { { 'REQUEST_PATH' => "/posts/#{name}", 'REQUEST_METHOD' => 'GET'} }
+
+      it 'matches request' do
+        expect(subject.call(env)).to eq [200, {}, ['post show page']]
+      end
     end
   end
 end
