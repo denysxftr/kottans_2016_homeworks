@@ -1,9 +1,18 @@
+# Main class for routing our requests
 class Router
   def call(env)
-    @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
+      @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    else
+      if env['REQUEST_PATH'].include?('post')
+        post_with_name(env['REQUEST_METHOD'], env['REQUEST_PATH'])
+      else
+        render_missing_page
+      end
+    end
   end
 
-private
+  private
 
   def initialize(&block)
     @routes = {}
@@ -21,5 +30,22 @@ private
   def match(http_method, path, rack_app)
     @routes[http_method] ||= {}
     @routes[http_method][path] = rack_app
+  end
+
+  def render_missing_page
+    [404, {}, ['page not found']]
+  end
+
+  def post_with_name(http_method, path)
+    if !path[6].nil?
+      array = []
+      (6...path.size).each do |letter_index|
+        array << path[letter_index]
+      end
+      post_link = array.join
+      @routes[http_method][post_link] = [200, {}, ['post ' + post_link]]
+    else
+      render_missing_page
+    end
   end
 end
