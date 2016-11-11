@@ -1,15 +1,14 @@
 # Main class for routing our requests
 class Router
   def call(env)
-    if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
-      @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
-    else
-      if env['REQUEST_PATH'].include?('post')
-        post_with_name(env['REQUEST_METHOD'], env['REQUEST_PATH'])
-      else
-        render_missing_page
-      end
-    end
+    call_right_page(@routes, env['REQUEST_METHOD'], env['REQUEST_PATH'], env)
+    # if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
+    #   @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    # elsif env['REQUEST_PATH'].include?('post')
+    #   post_with_name(env['REQUEST_METHOD'], env['REQUEST_PATH'])
+    # else
+    #   render_missing_page
+    # end
   end
 
   private
@@ -47,5 +46,15 @@ class Router
     else
       render_missing_page
     end
+  end
+end
+
+def call_right_page(route, method, path, env)
+  if route[method][path]
+    route[method][path].call(env)
+  elsif path.include?('post')
+    post_with_name(method, path)
+  else
+    render_missing_page
   end
 end
