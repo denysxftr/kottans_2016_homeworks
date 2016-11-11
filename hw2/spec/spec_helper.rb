@@ -1,4 +1,5 @@
-require './lib/router'
+# rubocop:disable all
+require './main'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
