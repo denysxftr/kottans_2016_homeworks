@@ -6,8 +6,24 @@ class Fibonacci
   end
 
   ##
-  # The Way I Like to do It
+  # The Way It Need to be Done (Retur Array with all numbers that it passed)
+  def each()
+    fibonacci_sequnce = Array.new
+    first, second = 1, 0
 
+    @fibonacci_length.times do
+      fibonacci_sequnce << first
+      first, second = first + second, first
+    end
+
+    fibonacci_sequnce.each do | element |
+      yield(element)
+    end
+  end
+
+  ##
+  # The Way I Like to do It
+=begin
   def each()
     first, second = 1, 0
     (1..@fibonacci_length).each do
@@ -16,8 +32,7 @@ class Fibonacci
       first, second = first + second, first
     end
   end
-
-
+=end
   ##
   # Without Recursion (only with variables)
 =begin
