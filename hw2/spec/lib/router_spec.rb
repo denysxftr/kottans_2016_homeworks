@@ -12,6 +12,7 @@ RSpec.describe Router do
       # /post/43
       # Cover this with tests.
       #
+      
       get '/post/:name', ->(env) { [200, {}, ['post show page']] }
     end
   end
