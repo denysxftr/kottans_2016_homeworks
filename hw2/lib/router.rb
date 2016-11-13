@@ -1,5 +1,7 @@
 class Router
   def call(env)
+    puts env['REQUEST_METHOD']
+    puts @routes
     route = @routes[env['REQUEST_METHOD']].find { |k, _v| env['REQUEST_PATH'] =~ k }
     return halt_with(404, 'not found', env) if route.nil?
     route[1].call(env)
@@ -21,14 +23,14 @@ class Router
   end
 
   def match(http_method, path, rack_app)
-    pattern = prepare_match_pattern(path)
+    pattern = pattern_for(path)
     @routes[http_method] ||= {}
     @routes[http_method][pattern] = rack_app
   end
 
-  def prepare_match_pattern(path)
-    return %r{^\/post\/[\w\d]+$} if path =~ %r{^\/post\/:.+$}
-    /#{Regexp.quote(path)}/
+  def pattern_for(path)
+    patt = path.split('/').map { |e| e.include?(':') ? '[\w]+' : e }.join('/')
+    /\A#{patt}\Z/
   end
 
   def halt_with(code, body, env)
