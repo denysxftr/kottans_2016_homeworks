@@ -47,14 +47,14 @@ class Router
       render_missing_page
     end
   end
-end
 
-def call_right_page(route, method, path, env)
-  if route[method][path]
-    route[method][path].call(env)
-  elsif path.include?('post')
-    post_with_name(method, path)
-  else
-    render_missing_page
+  def call_right_page(route, method, path, env)
+    if route[method][path]
+      route[method][path].call(env)
+    elsif path.include?('post')
+      post_with_name(method, path)
+    else
+      render_missing_page
+    end
   end
 end
