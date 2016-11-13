@@ -3,3 +3,7 @@ source "https://rubygems.org"
 
 gem "rack"
 gem "rspec"
+
+group 'test' do
+  gem 'pry'
+end
