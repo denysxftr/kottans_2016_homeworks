@@ -6,10 +6,10 @@ class Fibonacci
   end
 
   def each
-    a, b = 1, 1
+    curr, prev = 1, 1
     @length.times do
-      yield a
-      a, b = b, a+b
+      yield curr
+      curr, prev = prev, curr + prev
     end
   end
 end
