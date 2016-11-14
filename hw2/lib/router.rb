@@ -27,15 +27,24 @@ private
   end
 
   def regexp_method(path) 
-    Regexp.new(path.gsub(/:[a-zA-Z0-9_]+/, '[a-zA-Z0-9_]+'))
+    pattern = Regexp.new(path.gsub(/:[a-zA-Z0-9_]+/, '[a-zA-Z0-9_]+'))
+    return pattern
   end
 
   def select_route(env) 
     @routes[env['REQUEST_METHOD']].each do |path_regexp, route|
       if env['REQUEST_PATH'] =~ path_regexp
+        env['params'] = get_params(route[:pattern], env['REQUEST_PATH'])
         return route[:app]
       end
     end
     return ->(env) {[404, {}, ['Page not found']]}
   end 
+
+  def get_params(pattern, path) 
+    pattern.split('/')
+    .zip(path.split('/'))
+    .reject{|e| e.first==e.last}
+    .map{|e| [e.first[1..-1], e.last]}.to_h
+  end
 end
