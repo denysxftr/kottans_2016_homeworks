@@ -18,10 +18,9 @@ assert(
 )
 
 sequence = Fibonacci.new(1)
-<<<<<<< HEAD
+
 puts sequence.map(&:to_s)
-=======
->>>>>>> origin/master
+
 assert(
   expect: sequence.methods.include?(:each),
   text: 'has method each'

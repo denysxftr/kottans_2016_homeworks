@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 class Fibonacci
  include Enumerable
 
@@ -28,7 +28,7 @@ def initialize(num)
 
 	end
 end
-=======
+
 class Fibonacci
  include Enumerable
 
@@ -58,4 +58,3 @@ def initialize(num)
 
         end
 end
->>>>>>> origin/master
