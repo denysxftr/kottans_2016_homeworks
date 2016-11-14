@@ -24,6 +24,23 @@ RSpec.describe Router do
     end
   end
 
+  context 'when request is GET' do
+    let(:env) { { 'REQUEST_PATH' => '/post/1', 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['post show page']]
+    end
+  end
+
+
+   context 'when request is GET' do
+    let(:env) { { 'REQUEST_PATH' => '/', 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [404, {}, ['404 error']]
+    end
+  end
+
   context 'when request is POST' do
     let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'POST'} }
 
