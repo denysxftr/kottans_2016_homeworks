@@ -15,6 +15,7 @@ RSpec.describe Router do
       get '/post/:name', ->(env) { [200, {}, ['post show page']] }
       get '/post/:name/:name', ->(env) { [200, {}, ['nested in a row post show page']] }
       get '/post/:name/:name/comments/:name', ->(env) { [200, {}, ['nested in a row and not in a row post show page']] }
+      post '/test/some_path', ->(env) { [200, {}, ['post some_path page']] }
     end
   end
 
@@ -105,6 +106,18 @@ RSpec.describe Router do
 
     it 'matches request' do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
+    end
+
+    context 'when request is direct /test/some_path' do
+      it 'matches request "/test/some_path"' do
+        env['REQUEST_PATH'] = '/test/some_path'
+        expect(subject.call(env)).to eq [200, {}, ['post some_path page']]
+      end
+
+      it 'not matches request "/test/some_path/path"' do
+        env['REQUEST_PATH'] = '/test/some_path/path'
+        expect(subject.call(env)).to eq [404, {}, ['not found']]
+      end
     end
   end
 end
