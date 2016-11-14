@@ -36,7 +36,7 @@ private
 
   def find_route(env)
     @routes[env['REQUEST_METHOD']].each {|path_pattern, value| return value if env['REQUEST_PATH'].match(path_pattern)}
-    return ->(env) { [200, {}, ['page not found']] }
+    return ->(env) { [404, {}, ['page not found']] }
   end
 
 end

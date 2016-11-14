@@ -31,7 +31,7 @@ RSpec.describe Router do
     end
 
     it 'matches request to uknown route' do
-      expect(subject.call(unknown_route)).to eq [200, {}, ['page not found']]
+      expect(subject.call(unknown_route)).to eq [404, {}, ['page not found']]
     end
   end
 
