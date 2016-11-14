@@ -13,6 +13,8 @@ RSpec.describe Router do
       # Cover this with tests.
       #
       get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+      get '/post/:name/:name', ->(env) { [200, {}, ['nested in a row post show page']] }
+      get '/post/:name/:name/comments/:name', ->(env) { [200, {}, ['nested in a row and not in a row post show page']] }
     end
   end
 
@@ -27,7 +29,7 @@ RSpec.describe Router do
       expect(subject.call(env)).to eq [200, {}, ['get test']]
     end
 
-    context 'when request is nested "post"' do
+    context 'when request is nested /post/:name' do
       it 'matches request if nested' do
         env['REQUEST_PATH'] = '/post/some_string'
         expect(subject.call(env)).to eq [200, {}, ['post show page']]
@@ -39,12 +41,56 @@ RSpec.describe Router do
       end
 
       it 'not matches request if deep nested post url' do
-        env['REQUEST_PATH'] = '/post/some_string/string'
+        env['REQUEST_PATH'] = '/post/some_string/string/string'
         expect(subject.call(env)).to eq [404, {}, ['not found']]
+      end
+
+      it 'not matches request if url has //' do
+        env['REQUEST_PATH'] = '/post//some_string'
+        expect(subject.call(env)).to eq [404, {}, ['not found']]
+      end
+    end
+
+    context 'when request is nested /post/:name/:name' do
+      it 'matches request if nested' do
+        env['REQUEST_PATH'] = '/post/some_path/some_path'
+        expect(subject.call(env)).to eq [200, {}, ['nested in a row post show page']]
+      end
+
+      it 'matches request if nested and ends on /' do
+        env['REQUEST_PATH'] = '/post/some_path/some_path/'
+        expect(subject.call(env)).to eq [200, {}, ['nested in a row post show page']]
       end
 
       it 'not matches request if url is not nested but "post"' do
         env['REQUEST_PATH'] = '/post/'
+        expect(subject.call(env)).to eq [404, {}, ['not found']]
+      end
+    end
+
+    context 'when request is nested /post/:name/:name/comments/:name' do
+      it 'matches request if nested' do
+        env['REQUEST_PATH'] = '/post/some_path/some_path/comments/some_path'
+        expect(subject.call(env)).to eq [200, {}, ['nested in a row and not in a row post show page']]
+      end
+
+      it 'matches request if nested and ends on /' do
+        env['REQUEST_PATH'] = '/post/some_path/some_path/comments/some_path'
+        expect(subject.call(env)).to eq [200, {}, ['nested in a row and not in a row post show page']]
+      end
+
+      it 'not matches request if url is not nested but "post" and "comments"' do
+        env['REQUEST_PATH'] = '/post/:name/:name/comments/'
+        expect(subject.call(env)).to eq [404, {}, ['not found']]
+      end
+
+      it 'not matches request if url has not "comments"' do
+        env['REQUEST_PATH'] = '/post/:name/:name/some_path/:name'
+        expect(subject.call(env)).to eq [404, {}, ['not found']]
+      end
+
+      it 'not matches request if url is nested more than need ' do
+        env['REQUEST_PATH'] = '/post/:name/:name/some_path/:name/path'
         expect(subject.call(env)).to eq [404, {}, ['not found']]
       end
     end

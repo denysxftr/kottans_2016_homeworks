@@ -1,10 +1,18 @@
 class Router
   def call(env)
-    if nested_post? env
-      @routes[env['REQUEST_METHOD']]['/post/:name'].call(env)
-    else
-      @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    current_path, current_method = env['REQUEST_PATH'], env['REQUEST_METHOD']
+    return @routes[current_method]['direct'][current_path].call(env) if direct_path?(current_path, current_method)
+
+    @routes[current_method]['nested'].keys.each do |path|
+      path_array = path.split('/')
+      current_path_array = current_path.split('/')
+
+      next if different_path_size?(path_array, current_path_array) || different_pathes?(path_array, current_path_array)
+
+      return @routes[current_method]['nested'][path].call(env)
     end
+
+    @routes[env['REQUEST_METHOD']]['404'][env['REQUEST_PATH']].call(env)
   end
 
 private
@@ -23,12 +31,36 @@ private
   end
 
   def match(http_method, path, rack_app)
-    @routes[http_method] ||= Hash.new(->(env) { [404, {}, ['not found']] })
-    @routes[http_method][path] = rack_app
+    @routes[http_method] ||= Hash.new { |h,k| h[k] = Hash.new(->(env) { [404, {}, ['not found']] }) }
+
+    if path =~ /\/:\w/
+      @routes[http_method]['nested'][path] = rack_app
+    else
+      @routes[http_method]['direct'][path] = rack_app
+    end
   end
 
-  def nested_post?(env)
-    path_arr = env['REQUEST_PATH'][1..-1].split('/')
-    env['REQUEST_METHOD'] == 'GET' && path_arr.size == 2 && path_arr[0] == 'post'
+  def direct_path?(current_path, current_method)
+    @routes[current_method]['direct'].keys.each do |path|
+      return true if current_path == path
+    end
+
+    false
+  end
+
+  def different_path_size?(path_array, current_path_array)
+    path_array.size != current_path_array.size
+  end
+
+  def different_pathes?(path_array, current_path_array)
+    path_array.each_with_index do |_,index|
+      return true unless same_items_of_path?(path_array[index], current_path_array[index])
+    end
+
+    false
+  end
+
+  def same_items_of_path?(path_item, current_path_item)
+    path_item == current_path_item || (path_item =~ /:\w/ && current_path_item =~ /\w/)
   end
 end
