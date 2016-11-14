@@ -7,15 +7,11 @@ class Fibonacci
   end
 
   def each(&block)
-    a = 1
-    b = 0
+    curr = 1
+    prev = 0
     (1..@n).each do |i|
-      if i == 1
-        block.call(1)
-      else
-        block.call(a + b)
-        b, a = a, a + b
-      end
+      block.call(curr)
+	    curr, prev = prev + curr, curr     
     end
   end
 
