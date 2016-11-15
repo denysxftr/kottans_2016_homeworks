@@ -42,7 +42,7 @@ RSpec.describe Router do
 
   context 'when request has Pattern: /post/about_ruby' do
     let(:env) { { 'REQUEST_PATH' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET'} }
-    
+
     it 'returns /post/about_ruby' do
       expect(subject.call(env)).to eq [200, {}, ['post show page']]
     end
@@ -50,7 +50,7 @@ RSpec.describe Router do
 
   context 'when request has Pattern: /post/43' do
     let(:env) { { 'REQUEST_PATH' => '/post/43', 'REQUEST_METHOD' => 'GET'} }
-    
+
     it 'returns /post/about_ruby' do
       expect(subject.call(env)).to eq [200, {}, ['post show page']]
     end

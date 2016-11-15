@@ -1,15 +1,16 @@
 class Router
   def call(env)
-    if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
-      @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
-    else
-      if env['REQUEST_PATH'].include?('post')
-        match(env['REQUEST_METHOD'], env['REQUEST_PATH'], ->(env) { [200, {}, ['post show page']] })
-        @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
-      else      
-        [404, {}, ['Not Found']]
-      end
+    # return @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env) if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
+    # if env['REQUEST_PATH'].include?('post')
+    #   match(env['REQUEST_METHOD'], env['REQUEST_PATH'], ->(env) { [200, {}, ['post show page']] })
+    #   @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    # else
+    #   [404, {}, ['Not Found']]
+    # end
+    @routes[env['REQUEST_METHOD']].each do |path_pattern, rack_app|
+      return rack_app.call(env) if path_pattern.match(env['REQUEST_PATH'])
     end
+    [404, {}, ['Not Found']]
   end
 
 private
@@ -29,6 +30,10 @@ private
 
   def match(http_method, path, rack_app)
     @routes[http_method] ||= {}
-    @routes[http_method][path] = rack_app
+    @routes[http_method][pattern(path)] = rack_app
+  end
+
+  def pattern(path)
+    Regexp.new("^#{path.gsub(/:\w+/, '\w+')}\/?$")
   end
 end
