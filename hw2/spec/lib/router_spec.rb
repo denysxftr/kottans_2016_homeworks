@@ -1,34 +1,40 @@
 RSpec.describe Router do
+  routes = [
+    { path: '/posts', expect: '/posts' },
+    { path: '/posts/:a', expect: '/posts/a' },
+    { path: '/posts/:a/ab', expect: '/posts/a/ab' },
+    { path: '/posts/:a/:b/:c', expect: '/posts/a/b/c' }
+  ]
+
   subject do
     Router.new do
-      get '/test', ->(env) { [200, {}, ['get test']] }
-      post '/test', ->(env) { [200, {}, ['post test']] }
-
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
-      get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+      routes.each do |route|
+        get route[:path], ->(_) { [200, {}, ["GET #{route[:expect]}"]] }
+        post route[:path], ->(_) { [200, {}, ["POST #{route[:expect]}"]] }
+        patch route[:path], ->(_) { [200, {}, ["PATCH #{route[:expect]}"]] }
+        put route[:path], ->(_) { [200, {}, ["PUT #{route[:expect]}"]] }
+        delete route[:path], ->(_) { [200, {}, ["DELETE #{route[:expect]}"]] }
+      end
     end
   end
 
-  context 'when request is GET' do
-    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
+  %w(GET POST PATCH PUT DELETE).each do |http_method|
+    context "when request is #{http_method}" do
+      routes.each do |route|
+        it "matches #{route[:path]} request" do
+          env = {
+            'REQUEST_PATH' => route[:expect],
+            'REQUEST_METHOD' => http_method
+          }
+          response = [200, {}, ["#{http_method} #{route[:expect]}"]]
+          expect(subject.call(env)).to eq(response)
+        end
+      end
 
-    it 'matches request' do
-      expect(subject.call(env)).to eq [200, {}, ['get test']]
-    end
-  end
-
-  context 'when request is POST' do
-    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'POST'} }
-
-    it 'matches request' do
-      expect(subject.call(env)).to eq [200, {}, ['post test']]
+      it 'returns 404 if path not found' do
+        env = { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => http_method }
+        expect(subject.call(env)).to eq([404, {}, ['page not found']])
+      end
     end
   end
 end
