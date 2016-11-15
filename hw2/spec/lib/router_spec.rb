@@ -12,7 +12,8 @@ RSpec.describe Router do
       # /post/43
       # Cover this with tests.
       #
-      get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+      post '/post/:name', ->(env) { [200, {}, ['post create page']] }
+      get '/test/:id/with/:smth', ->(env) { [200, {}, ['got get request with id and something']] }
     end
   end
 
@@ -31,4 +32,19 @@ RSpec.describe Router do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
     end
   end
+  context 'when has params in path, ' do
+
+    let(:env) { { 'REQUEST_PATH' => '/post/Smith', 'REQUEST_METHOD' => 'POST'} }
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['post create page']]
+    end
+  end
+  context 'when has lots of params in path, ' do
+    let(:env) { { 'REQUEST_PATH' => '/test/1/with/me', 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['got get request with id and something']]
+    end
+  end
+
 end
