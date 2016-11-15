@@ -1,0 +1,5 @@
+Compiler.eval(:x,5)
+Compiler.eval(:x) == 5
+Compiler.eval(:puts,:x) #puts 5
+
+#написать что-то
