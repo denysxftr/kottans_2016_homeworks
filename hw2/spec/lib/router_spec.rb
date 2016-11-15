@@ -3,29 +3,39 @@ RSpec.describe Router do
     Router.new do
       get '/test', ->(env) { [200, {}, ['get test']] }
       post '/test', ->(env) { [200, {}, ['post test']] }
-
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
-      get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+      get '/some_path', ->(env) { [404, {}, ['not found']] }
+      get '/post/:name', -> (env) {[200, {}, ['show post page']]}
+      get '/some/:id/other/:id', -> (env) {[200, {}, ['some other path']]}
     end
   end
 
+
   context 'when request is GET' do
-    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
+    let(:env) { { 'PATH_INFO' => '/test', 'REQUEST_METHOD' => 'GET'} }
+    let(:env_params) { { 'PATH_INFO' => '/post/123', 'REQUEST_METHOD' => 'GET'} }
+    let(:env_more_params) { { 'PATH_INFO' => '/some/21/other/12', 'REQUEST_METHOD' => 'GET'} }
+    let(:unknown_env) { { 'PATH_INFO' => '/some_path', 'REQUEST_METHOD' => 'GET'} }
 
     it 'matches request' do
       expect(subject.call(env)).to eq [200, {}, ['get test']]
     end
+
+    it 'matches request with named params' do
+      expect(subject.call(env_params)).to eq [200, {}, ['show post page']]
+    end
+
+    it 'matches request with multiple named params' do
+      expect(subject.call(env_more_params)).to eq [200, {}, ['some other path']]
+    end
+
+    it 'returns 404 when path is unknown' do
+      expect(subject.call(unknown_env)).to eq [404, {}, ['not found']]
+    end
   end
 
+
   context 'when request is POST' do
-    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'POST'} }
+    let(:env) { { 'PATH_INFO' => '/test', 'REQUEST_METHOD' => 'POST'} }
 
     it 'matches request' do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
