@@ -43,15 +43,15 @@ class Router
   end
 
   def path_regexp(path)
-    parts = path.split('/').map do |part|
-      part = part.replace('[A-Za-z0-9_-]+') if part.include? ':'
-      part
-    end
-    Regexp.new('\A' + parts.join('\/') + '\z')
+    Regexp.new('\A' + path.gsub(/:[\w-]+/, '[\w-]+') + '\z')
   end
 
   def match(http_method, path, rack_app)
     @routes[http_method] ||= []
-    @routes[http_method] << { regexp: path_regexp(path), app: rack_app }
+    @routes[http_method] << {
+      path: path,
+      regexp: path_regexp(path),
+      app: rack_app
+    }
   end
 end
