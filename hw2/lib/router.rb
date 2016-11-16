@@ -1,9 +1,10 @@
 class Router
   def call(env)
+    find_route
     @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
   end
 
-private
+  private
 
   def initialize(&block)
     @routes = {}
