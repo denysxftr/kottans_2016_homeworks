@@ -1,19 +1,19 @@
 =begin
-@routes[REQUEST_METHOD] has two hashes "direct" and "nested"
-"direct"  - to storage routes without ":" "/test/some_path"
-"nested"  - to storage routes with ":" ""/test/:name""
+@routes[REQUEST_METHOD] has two hashes "simple" and "complex"
+"simple"  - to storage routes without ":" "/test/some_path"
+"complex"  - to storage routes with ":" "/test/:name
 
 @routes = {
   "GET":
-    "direct": {
+    "simple": {
       "/test": RACK_APP_1
     }
-    "nested": {
+    "complex": {
       "/test/:name": RACK_APP_3
       "/test/:name/:name": RACK_APP_4
     }
   "POST": {
-    "direct": {
+    "simple": {
       "/test": RACK_APP_2
       "/test/some_path": RACK_APP_5
     }
@@ -24,16 +24,13 @@
 class Router
   def call(env)
     current_method, current_path  = env['REQUEST_METHOD'], env['REQUEST_PATH']
-
-    # direct routes handling
-    return routes[current_method]['direct'][current_path].call(env) if direct_path?(current_path, current_method)
-
-    # nested routes handling
-    path = nested_path?(current_path, current_method)
-    return routes[current_method]['nested'][path].call(env) if path
-
+    # simple routes handling
+    return routes[current_method]['simple'][current_path].call(env) if simple_path?(current_path, current_method)
+    # complex routes handling
+    path = complex_path?(current_path, current_method)
+    return routes[current_method]['complex'][path].call(env) if path.is_a? String
     # 404 routes handling
-    routes[current_method]['404'][current_path].call(env)
+    ->(env) { [404, {}, ['not found']] }.call(env)
   end
 
 private
@@ -53,27 +50,28 @@ private
   end
 
   def match(http_method, path, rack_app)
-    routes[http_method] ||= Hash.new { |k,v| k[v] = Hash.new(->(env) { [404, {}, ['not found']] }) }
+    routes[http_method] ||= {}
+    routes[http_method]['complex'] ||= {}
+    routes[http_method]['simple'] ||= {}
 
     if path =~ /\/:\w/
-      routes[http_method]['nested'][path] = rack_app
+      routes[http_method]['complex'][path] = rack_app
     else
-      routes[http_method]['direct'][path] = rack_app
+      routes[http_method]['simple'][path] = rack_app
     end
   end
 
-  def direct_path?(current_path, current_method)
-    routes[current_method]['direct'].keys.each do |path|
+  def simple_path?(current_path, current_method)
+    routes[current_method]['simple'].keys.each do |path|
       return true if current_path == path
     end
 
     false
   end
 
-  def nested_path?(current_path, current_method)
-    routes[current_method]['nested'].keys.each do |path|
+  def complex_path?(current_path, current_method)
+    routes[current_method]['complex'].keys.each do |path|
       path_array, current_path_array = path.split('/'), current_path.split('/')
-
       next if different_path_size?(path_array, current_path_array) || different_pathes?(path_array, current_path_array)
 
       return path
