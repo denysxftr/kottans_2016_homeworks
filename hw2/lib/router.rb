@@ -28,7 +28,7 @@ class Router
     return routes[current_method]['simple'][current_path].call(env) if simple_path?(current_path, current_method)
     # complex routes handling
     path = complex_path?(current_path, current_method)
-    return routes[current_method]['complex'][path].call(env) if path.is_a? String
+    return routes[current_method]['complex'][path].call(env) if path
     # 404 routes handling
     ->(env) { [404, {}, ['not found']] }.call(env)
   end
@@ -76,6 +76,8 @@ private
 
       return path
     end
+
+    nil
   end
 
   def different_path_size?(path_array, current_path_array)
