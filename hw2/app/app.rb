@@ -1,15 +1,24 @@
-Application = Router.new do
-  # posts
-  get     '/posts',                    ->(env) { [200, {}, ['shows the posts'   ]] }             # /posts
-  post    '/posts',                    ->(env) { [200, {}, ['creates a post'    ]] }             # /posts
-  get     '/posts/:name',              ->(env) { [200, {}, ['shows a post'      ]] }             # /posts/1
-  put     '/posts/:name',             ->(env) { [200, {}, ['updates a post'    ]] }             # /posts/1
-  delete  '/posts/:name',              ->(env) { [200, {}, ['destroys a post'   ]] }             # /posts/1
+class TestController < Controller
+  def test
+    response(:text, "Request method: #{request.request_method}")        # request - exemplar of Rack::Request class
+                               # we use request method to get the info about request, example: method, path, etc...
+  end
+end
 
-  # comments that nested in post
-  get     '/posts/:name/comments',     ->(env) { [200, {}, ['shows the comments']] }              # /posts/1/comments
-  post    '/posts/:name/comments',    ->(env) { [200, {}, ['creates a comment' ]] }              # /posts/1/comments
-  get     '/posts/:name/comments/:id', ->(env) { [200, {}, ['shows a comment'   ]] }              # /posts/1/comments/1
-  put     '/posts/:name/comments/:id', ->(env) { [200, {}, ['updates a comment' ]] }              # /posts/1/comments/1
-  delete  '/posts/:name/comments/:id', ->(env) { [203, {}, ['destroys a comment']] }              # /posts/1/comments/1
+class PostsController < Controller
+  def show
+    response(:json, title: params['title'], description: params['description'], author: params['author_name'] )
+  end
+end
+
+class CommentsController < Controller
+  def index
+    response(:json, count: params['count'])
+  end
+end
+
+Application = Router.new do
+  get '/test', 'test#test'
+  get '/posts/:id', 'posts#show'
+  get '/posts/:id/comments', 'comments#index'
 end
