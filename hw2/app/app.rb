@@ -1,6 +1,15 @@
-Application = Router.new do
-  get '/test', ->(env) { [200, {}, ['get test']] }
-  post '/test', ->(env) { [200, {}, ['post test']] }
+class TestsController < Controller
+  def show
+    response(:json, params)
+  end
 
-  get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+  def test
+    response(:text, "Request method: #{request.request_method}")
+   end
+end
+
+
+Application = Router.new do
+  get '/post/:name/:otherone', 'tests#show'
+  get '/test', 'tests#test'
 end
