@@ -19,10 +19,11 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   rack
   rspec
 
 BUNDLED WITH
-   1.13.5
+   1.13.6
