@@ -8,12 +8,20 @@ class Controller
     @env = env
     @request = Rack::Request.new(env)
     @request.params.merge!(env['router.params'] || {})
-    show
-    [200, @response_headers, @response_body]
+    send(@action_name)
+    [200, @response_headers, [@response_body]]
+  end
+
+  def self.action(action_name)
+    proc { |env| new(action_name).call(env) }
   end
 
   private
   attr_reader :request
+
+  def initialize(action_name)
+    @action_name = action_name
+  end
 
   def params
     request.params
