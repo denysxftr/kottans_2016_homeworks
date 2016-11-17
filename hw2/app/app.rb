@@ -4,11 +4,11 @@ class TestsController < Controller
   end
 
   def test
-    response(:text, "Request method ")
+    response(:text, "Request method: #{request.request_method}")
   end
 end
 
 Application = Router.new do
-  get '/test', ->(env) { [200, {}, ['get test']] }
-  post '/test', ->(env) { [200, {}, ['post test']] }
+  get '/post/:name/:other_name', 'tests#show'
+  get '/test', 'tests#test'
 end

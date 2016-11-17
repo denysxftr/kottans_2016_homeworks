@@ -6,7 +6,7 @@ class Router
   private
 
   def initialize(&block)
-    @routes = {}
+    @routes = []
     instance_exec(&block)
   end
 
@@ -17,7 +17,7 @@ class Router
         return route[:app]
       end
     end
-    return ->(_env), { [404], {}, ['not found'] }
+    return ->(_env) { [404, {}, ['not found']] }
   end
 
   def get(path, rack_app)
