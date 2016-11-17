@@ -31,4 +31,20 @@ RSpec.describe Router do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
     end
   end
+
+  context 'when path has parameter' do
+    let(:env) { { 'REQUEST_PATH' => '/post/about-ruby', 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['post show page']]
+    end
+  end
+
+  context 'when path is not defined in router' do
+    let(:env) { { 'REQUEST_PATH' => '/asdkahbdfma', 'REQUEST_METHOD' => 'GET'} }
+
+    it 'should respond with 404 page not found' do
+      expect(subject.call(env)).to eq [404, {}, ['page not found']]
+    end
+  end
 end
