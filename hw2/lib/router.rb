@@ -42,8 +42,8 @@ class Router
 
   def to_upper_camel_case(str)
     str
-        .split('/') # ['public_pages', 'test']
-        .map { |part| part.split('_').map(&:capitalize).join } # ['PublicPages', 'Test']
+        .split('/')
+        .map { |part| part.split('_').map(&:capitalize).join }
         .join('::') + 'Controller'
   end
 
@@ -53,10 +53,10 @@ class Router
 
   def extract_params(pattern, path)
     pattern
-        .split('/') # ['post', ':name']
-        .zip(path.split('/')) # [['post', 'post'],[':name', 'post']]
-        .reject { |e| e.first == e.last } # [[':name', 'post']]
-        .map { |e| [e.first[1..-1], e.last] } # [['name', 'post']]
+        .split('/')
+        .zip(path.split('/'))
+        .reject { |e| e.first == e.last }
+        .map { |e| [e.first[1..-1], e.last] }
         .to_h
   end
 end
