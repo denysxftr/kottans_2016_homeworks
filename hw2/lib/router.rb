@@ -1,6 +1,11 @@
 class Router
   def call(env)
-    @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    if @routes[env['REQUEST_METHOD']] && @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
+      return @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    end
+
+    # 404 error page
+    [404, {}, ['Page not found']]
   end
 
 private
