@@ -3,15 +3,6 @@ RSpec.describe Router do
     Router.new do
       get '/test', ->(env) { [200, {}, ['get test']] }
       post '/test', ->(env) { [200, {}, ['post test']] }
-
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
       get '/post/:name', ->(env) { [200, {}, ['post show page']] }
     end
   end
