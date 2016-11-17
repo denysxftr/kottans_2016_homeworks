@@ -25,7 +25,7 @@ RSpec.describe Router do
       expect(subject.call(env)).to eq [200, {}, ['get test']]
     end
 
-    context 'when request is GET with params' do
+    context 'when request is GET with param' do
       let(:env) { { 'REQUEST_PATH' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET' } }
 
       it 'matches request with params' do
@@ -33,9 +33,12 @@ RSpec.describe Router do
       end
     end
 
-    # it 'matches request with params and substitutes them' do
-    #   env['REQUEST_PATH'] = '/blog/vasya/posts/about_ruby'
-    #   expect(subject.call(env)).to eq [200, {}, ['get blog page: vasya post: about_ruby']]
+    # context 'when request is GET with multiple params' do
+    #   let(:env) { { 'REQUEST_PATH' => '/blog/vasya/posts/about_ruby', 'REQUEST_METHOD' => 'GET' } }
+    #
+    #   it 'matches request with params and substitutes them' do
+    #     expect(subject.call(env)).to eq [200, {}, ['get blog page: vasya post: about_ruby']]
+    #   end
     # end
   end
 
