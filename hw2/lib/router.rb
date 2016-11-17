@@ -35,30 +35,22 @@ class Router
   end
 
   def get_controller_action(str)
-    controller_name, action_name = str.split('#') # tests#show => ['tests', 'show']
+    controller_name, action_name = str.split('#')
     controller_name = to_upper_camel_case(controller_name)
     Kernel.const_get(controller_name).send(:action, action_name)
-    # controller_name = public_test
-    # action_name = show
-    # PublicTestController.action('show')
   end
 
   def to_upper_camel_case(str)
-    str # 'public_pages/tests' => PublicPages::TestsController
+    str
         .split('/') # ['public_pages', 'test']
         .map { |part| part.split('_').map(&:capitalize).join } # ['PublicPages', 'Test']
         .join('::') + 'Controller'
   end
 
-
-  # /post/:name
   def path_to_regexp(path)
     Regexp.new('\A' + path.gsub(/:[\w-]+/, '[\w-]+') + '\Z')
   end
 
-  # /post/:name
-  # /post/test_one
-  # { name: 'test_one' }
   def extract_params(pattern, path)
     pattern
         .split('/') # ['post', ':name']
