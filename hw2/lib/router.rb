@@ -14,12 +14,12 @@ class Router
   def find_route(env)
     @routes.each do |route|
       if env['REQUEST_METHOD'] == route[:method] &&
-        env['REQUEST_PATH'].downcase =~ route[:regexp]
+         env['REQUEST_PATH'].downcase =~ route[:regexp]
         return route[:app]
       end
     end
 
-    return render_missing_page(env)
+    render_missing_page(env)
   end
 
   def get(path, rack_app)
@@ -37,7 +37,7 @@ class Router
     }
   end
 
-  def render_missing_page(env)
+  def render_missing_page(_env)
     ->(_env) { [404, {}, ['page not found']] }
   end
 
