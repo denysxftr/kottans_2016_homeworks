@@ -53,9 +53,9 @@ RSpec.describe Router do
 
   context 'when writting path UPPERCASE' do
     let(:env) do
-      { 'REQUEST_PATH' => '/TEST', 'REQUEST_METHOD' => 'GET'}
+      { 'REQUEST_PATH' => '/TEST', 'REQUEST_METHOD' => 'GET' }
     end
-    it "it must still render page" do
+    it 'it must still render page' do
       expect(subject.call(env)).to eq [200, {}, ['get test']]
     end
   end
