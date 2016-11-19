@@ -3,17 +3,7 @@ RSpec.describe Router do
     Router.new do
       get '/test', ->(_env) { [200, {}, ['get test']] }
       post '/test', ->(_env) { [200, {}, ['post test']] }
-
-      get '/post/:name', ->(_env) { [200, {}, []] }
-
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
+      get '/post/:name', ->(_env) { [200, {}, ['post page']] }
     end
   end
 
@@ -48,7 +38,7 @@ RSpec.describe Router do
   context 'when visiting post with a number' do
     let(:env) { { 'REQUEST_PATH' => '/post/43', 'REQUEST_METHOD' => 'GET' } }
     it 'we should see /43 post' do
-      expect(subject.call(env)).to eq [200, {}, ['post 43']]
+      expect(subject.call(env)).to eq [200, {}, ['post page']]
     end
   end
 
@@ -57,7 +47,16 @@ RSpec.describe Router do
       { 'REQUEST_PATH' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET' }
     end
     it 'we should see /about_ruby post' do
-      expect(subject.call(env)).to eq [200, {}, ['post about_ruby']]
+      expect(subject.call(env)).to eq [200, {}, ['post page']]
+    end
+  end
+
+  context 'when writting path UPPERCASE' do
+    let(:env) do
+      { 'REQUEST_PATH' => '/TEST', 'REQUEST_METHOD' => 'GET'}
+    end
+    it "it must still render page" do
+      expect(subject.call(env)).to eq [200, {}, ['get test']]
     end
   end
 end

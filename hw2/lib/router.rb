@@ -1,21 +1,25 @@
 # Main class for routing our requests
 class Router
   def call(env)
-    call_right_page(@routes, env['REQUEST_METHOD'], env['REQUEST_PATH'], env)
-    # if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
-    #   @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
-    # elsif env['REQUEST_PATH'].include?('post')
-    #   post_with_name(env['REQUEST_METHOD'], env['REQUEST_PATH'])
-    # else
-    #   render_missing_page
-    # end
+    find_route(env).call(env)
   end
 
   private
 
   def initialize(&block)
-    @routes = {}
+    @routes = []
     instance_exec(&block)
+  end
+
+  def find_route(env)
+    @routes.each do |route|
+      if env['REQUEST_METHOD'] == route[:method] &&
+        env['REQUEST_PATH'].downcase =~ route[:regexp]
+        return route[:app]
+      end
+    end
+
+    return render_missing_page(env)
   end
 
   def get(path, rack_app)
@@ -27,34 +31,17 @@ class Router
   end
 
   def match(http_method, path, rack_app)
-    @routes[http_method] ||= {}
-    @routes[http_method][path] = rack_app
+    @routes << {
+      pattern: path, app: rack_app,
+      regexp: path_to_regexp(path), method: http_method
+    }
   end
 
-  def render_missing_page
-    [404, {}, ['page not found']]
+  def render_missing_page(env)
+    ->(_env) { [404, {}, ['page not found']] }
   end
 
-  def post_with_name(http_method, path)
-    if !path[6].nil?
-      array = []
-      (6...path.size).each do |letter_index|
-        array << path[letter_index]
-      end
-      post_link = array.join
-      @routes[http_method][post_link] = [200, {}, ['post ' + post_link]]
-    else
-      render_missing_page
-    end
-  end
-
-  def call_right_page(route, method, path, env)
-    if route[method][path]
-      route[method][path].call(env)
-    elsif path.include?('post')
-      post_with_name(method, path)
-    else
-      render_missing_page
-    end
+  def path_to_regexp(path)
+    Regexp.new('\A' + path.gsub(/:[\w-]+/, '[\w-]+') + '\Z')
   end
 end
