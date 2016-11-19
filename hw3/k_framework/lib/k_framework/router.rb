@@ -3,8 +3,8 @@ module KFramework
 
     def call(env)
       @routes[env['REQUEST_METHOD']].each do |route|
-        env['router.params'] = extract_params(route[:path], env['REQUEST_PATH'])
-        return route[:app].call(env) if route[:pattern].match(env['REQUEST_PATH'])
+        env['router.params'] = extract_params(route[:path], env['PATH_INFO'])
+        return route[:app].call(env) if route[:pattern].match(env['PATH_INFO'])
       end
       [404, {}, ['not found']]
     end
@@ -47,10 +47,10 @@ module KFramework
       Regexp.new("^#{path.gsub(/:\w+/, '\w+')}\/?$")
     end
 
-    def extract_params(route_path, request_path)
+    def extract_params(route_path, path_info)
       route_path
         .split('/')
-        .zip(request_path.split('/'))
+        .zip(path_info.split('/'))
         .reject { |e| e.first == e.last }
         .map { |e| [e.first[1..-1], e.last] }
         .to_h

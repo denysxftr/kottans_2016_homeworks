@@ -24,9 +24,9 @@ RSpec.describe KFramework::Router do
   context 'when request is GET' do
     include_examples 'handles requests to unknown routes'
 
-    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
-    let(:env_with_param) { { 'REQUEST_PATH' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET'} }
-    let(:unknown_env) { {'REQUEST_PATH' => '/wut', 'REQUEST_METHOD' => 'GET'} }
+    let(:env) { { 'PATH_INFO' => '/test', 'REQUEST_METHOD' => 'GET'} }
+    let(:env_with_param) { { 'PATH_INFO' => '/post/about_ruby', 'REQUEST_METHOD' => 'GET'} }
+    let(:unknown_env) { {'PATH_INFO' => '/wut', 'REQUEST_METHOD' => 'GET'} }
 
     it 'matches request' do
       expect(subject.call(env)).to eq [200, {}, ['get test']]
@@ -45,8 +45,8 @@ RSpec.describe KFramework::Router do
   context 'when request is POST' do
     include_examples 'handles requests to unknown routes'
 
-    let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'POST'} }
-    let(:unknown_env) { {'REQUEST_PATH' => '/wut', 'REQUEST_METHOD' => 'POST'} }
+    let(:env) { { 'PATH_INFO' => '/test', 'REQUEST_METHOD' => 'POST'} }
+    let(:unknown_env) { {'PATH_INFO' => '/wut', 'REQUEST_METHOD' => 'POST'} }
 
     it 'matches request' do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
@@ -54,7 +54,7 @@ RSpec.describe KFramework::Router do
   end
 
   it 'matches controller#action string' do
-    env = { 'REQUEST_PATH' => '/ctrl', 'REQUEST_METHOD' => 'GET'}
+    env = { 'PATH_INFO' => '/ctrl', 'REQUEST_METHOD' => 'GET'}
     expect(subject.call(env)).to eq [200, {}, ['ctrl test']]
   end
 end
