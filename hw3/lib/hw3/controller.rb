@@ -2,6 +2,8 @@ module Hw3
 class Controller
   RESPONSE_TYPES = {
     text: ['text/plain', ->(c) { c.to_s }],
+    html: ['text/html', ->(c) { c.to_s }],
+    erb: ['text/html', ->(c) { c.result }],
     json: ['application/json', ->(c) { Oj.dump(c) }]
   }.freeze
 
