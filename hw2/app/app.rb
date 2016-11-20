@@ -1,3 +1,4 @@
+# Inherit from our Controller.rb
 class TestsController < Controller
   def show
     response(:json, params)

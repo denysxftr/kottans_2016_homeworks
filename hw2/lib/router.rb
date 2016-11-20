@@ -15,7 +15,8 @@ class Router
     @routes.each do |route|
       if env['REQUEST_METHOD'] == route[:method] &&
          env['REQUEST_PATH'].downcase =~ route[:regexp]
-        env['router.params'] = extract_params(route[:pattern], env['REQUEST_PATH'])
+        env['router.params'] =
+          extract_params(route[:pattern], env['REQUEST_PATH'])
         return route[:app]
       end
     end

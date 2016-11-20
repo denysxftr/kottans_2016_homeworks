@@ -31,7 +31,7 @@ class Controller
 
   def response(type, content)
     @response_headers ||= {}
-    @response_headers.merge!('Content-Type' => RESPONSE_TYPES[type][0])
+    @response_headers['Content-Type'] = RESPONSE_TYPES[type][0]
     @response_body = RESPONSE_TYPES[type][1].call(content)
   end
 end
