@@ -1,4 +1,6 @@
-require_relative '../main'
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require 'hw3'
+require 'pry'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

@@ -1,6 +1,8 @@
-RSpec.describe Router do
+require 'spec_helper'
+
+RSpec.describe Hw3::Router do
   subject do
-    Router.new do
+    Hw3::Router.new do
       get '/test', ->(_env) { [200, {}, ['get test']] }
       post '/test', ->(_env) { [200, {}, ['post test']] }
       get '/post/:name', ->(_env) { [200, {}, ['post show page']] }

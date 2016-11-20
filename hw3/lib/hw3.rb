@@ -1,0 +1,6 @@
+require 'rack'
+require 'oj'
+require 'erb'
+require 'hw3/version'
+require 'hw3/router'
+require 'hw3/controller'
