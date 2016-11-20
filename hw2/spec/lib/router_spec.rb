@@ -31,4 +31,21 @@ RSpec.describe Router do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
     end
   end
+
+  context 'when request is not a viable route' do
+    let(:env) { { 'REQUEST_PATH' => '/blabla', 'REQUEST_METHOD' => 'GET'} }
+    
+    it 'matches response 404' do
+      expect(subject.call(env)).to eq [404, {}, ['404. This are not the droids you\'re looking for.']]  
+    end
+  end
+
+  context 'when request is a pattern' do
+    let(:env) { { 'REQUEST_PATH' => '/post/43', 'REQUEST_METHOD' => 'GET'} }
+    it 'matches pattern response' do
+      expect(subject.call(env)).to eq [200, {}, ['post show page']]
+    end
+  end
+
+  #test for 404
 end
