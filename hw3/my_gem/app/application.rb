@@ -1,8 +1,7 @@
+require 'my_gem/version'
 ##
 # Controller (inherit from our main Controller class)
 #
-require "my_gem/version"
-
 class TestsController < Controller
   def show
     response(:json, params)

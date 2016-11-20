@@ -1,7 +1,6 @@
 ##
 # Basic class to controll our requests
 #
-
 class Controller
   RESPONSE_TYPES = {
     text: ['text/plain', ->(c) { c.to_s }],

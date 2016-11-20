@@ -1,7 +1,6 @@
 ##
 # Basic class for routing our requests
 #
-
 class Router
   def call(env)
     find_route(env).call(env)
