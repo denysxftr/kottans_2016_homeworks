@@ -1,0 +1,73 @@
+current directory: /Users/Zayac/Desktop/Kottans/kottans_2016_homeworks/hw3/my_gem/vendor/bundle/gems/oj-2.17.5/ext/oj
+/Users/Zayac/.rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20161120-3854-v6bvvu.rb extconf.rb
+>>>>> Creating Makefile for ruby version 2.3.1 on x86_64-darwin16 <<<<<
+creating Makefile
+
+current directory: /Users/Zayac/Desktop/Kottans/kottans_2016_homeworks/hw3/my_gem/vendor/bundle/gems/oj-2.17.5/ext/oj
+make "DESTDIR=" clean
+
+current directory: /Users/Zayac/Desktop/Kottans/kottans_2016_homeworks/hw3/my_gem/vendor/bundle/gems/oj-2.17.5/ext/oj
+make "DESTDIR="
+compiling cache8.c
+compiling circarray.c
+compiling compat.c
+compiling dump.c
+dump.c:570:8: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+        cnt = RSTRING_LEN(rstr);
+            ~ ^~~~~~~~~~~~~~~~~
+/Users/Zayac/.rvm/rubies/ruby-2.3.1/include/ruby-2.3.0/ruby/ruby.h:998:6: note: expanded from macro 'RSTRING_LEN'
+     RSTRING_EMBED_LEN(str) : \
+     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/Zayac/.rvm/rubies/ruby-2.3.1/include/ruby-2.3.0/ruby/ruby.h:994:6: note: expanded from macro 'RSTRING_EMBED_LEN'
+     (long)((RBASIC(str)->flags >> RSTRING_EMBED_LEN_SHIFT) & \
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dump.c:570:8: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+        cnt = RSTRING_LEN(rstr);
+            ~ ^~~~~~~~~~~~~~~~~
+/Users/Zayac/.rvm/rubies/ruby-2.3.1/include/ruby-2.3.0/ruby/ruby.h:999:28: note: expanded from macro 'RSTRING_LEN'
+     RSTRING(str)->as.heap.len)
+     ~~~~~~~~~~~~~~~~~~~~~~^~~
+dump.c:2007:17: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+            int         len = RSTRING_LEN(v);
+                        ~~~   ^~~~~~~~~~~~~~
+/Users/Zayac/.rvm/rubies/ruby-2.3.1/include/ruby-2.3.0/ruby/ruby.h:998:6: note: expanded from macro 'RSTRING_LEN'
+     RSTRING_EMBED_LEN(str) : \
+     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/Zayac/.rvm/rubies/ruby-2.3.1/include/ruby-2.3.0/ruby/ruby.h:994:6: note: expanded from macro 'RSTRING_EMBED_LEN'
+     (long)((RBASIC(str)->flags >> RSTRING_EMBED_LEN_SHIFT) & \
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dump.c:2007:17: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+            int         len = RSTRING_LEN(v);
+                        ~~~   ^~~~~~~~~~~~~~
+/Users/Zayac/.rvm/rubies/ruby-2.3.1/include/ruby-2.3.0/ruby/ruby.h:999:28: note: expanded from macro 'RSTRING_LEN'
+     RSTRING(str)->as.heap.len)
+     ~~~~~~~~~~~~~~~~~~~~~~^~~
+4 warnings generated.
+compiling err.c
+compiling fast.c
+compiling hash.c
+compiling hash_test.c
+compiling object.c
+object.c:285:40: warning: implicit conversion loses integer precision: 'size_t' (aka 'unsigned long') to 'int' [-Wshorten-64-to-32]
+            parent->val = parse_xml_time(str, len);
+                          ~~~~~~~~~~~~~~      ^~~
+1 warning generated.
+compiling odd.c
+compiling oj.c
+compiling parse.c
+parse.c:736:23: warning: implicit conversion loses integer precision: 'long long' to 'int' [-Wshorten-64-to-32]
+            int         x = ni->exp - ni->di;
+                        ~   ~~~~~~~~^~~~~~~~
+1 warning generated.
+compiling reader.c
+compiling resolve.c
+compiling saj.c
+compiling scp.c
+compiling sparse.c
+compiling strict.c
+compiling val_stack.c
+linking shared-object oj/oj.bundle
+
+current directory: /Users/Zayac/Desktop/Kottans/kottans_2016_homeworks/hw3/my_gem/vendor/bundle/gems/oj-2.17.5/ext/oj
+make "DESTDIR=" install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 oj.bundle ./.gem.20161120-3854-opo2tu/oj
