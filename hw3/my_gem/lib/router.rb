@@ -1,4 +1,6 @@
-# Main class for routing our requests
+##
+# Basic class for routing our requests
+#
 class Router
   def call(env)
     find_route(env).call(env)
@@ -72,3 +74,7 @@ class Router
       .to_h
   end
 end
+
+##
+# End of router.rb file
+#

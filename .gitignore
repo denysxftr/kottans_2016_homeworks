@@ -1,0 +1,6 @@
+.DS_Store
+/hw2/vendor
+/hw2/.bundle
+hw3/my_gem/vendor
+hw3/my_gem/.bundle
+
