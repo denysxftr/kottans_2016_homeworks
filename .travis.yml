@@ -6,7 +6,7 @@ script:
   - cd hw3 && bundle install && bundle exec rspec spec
 
 before_deploy:
-  -cd hw3
+  - cd hw3
 
 deploy:
   provider: heroku
