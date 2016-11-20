@@ -1,3 +1,3 @@
-require './main'
+require './lib/hw3'
 
 run Application

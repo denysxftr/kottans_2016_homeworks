@@ -16,7 +16,8 @@ class Controller
     proc { |env| new(action_name).call(env) }
   end
 
-private
+  private
+
   attr_reader :request
 
   def initialize(action_name)
@@ -29,7 +30,7 @@ private
 
   def response(type, content)
     @response_headers ||= {}
-    @response_headers.merge!('Content-Type' => RESPONSE_TYPES[type][0])
+    @response_headers['Content-Type'] = RESPONSE_TYPES[type][0]
     @response_body = RESPONSE_TYPES[type][1].call(content)
   end
 end
