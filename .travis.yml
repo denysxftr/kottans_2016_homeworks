@@ -3,3 +3,6 @@ rvm:
   - 2.3.1
 script:
   - bash check.sh
+  - cd hw3
+  - bundle install
+  - bundle exec rspec spec
