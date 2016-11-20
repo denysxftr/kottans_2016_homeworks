@@ -2,7 +2,7 @@ RSpec.describe Controller do
   let(:controller) do
     Class.new(Controller) do
       def test_json
-        response(:json, { "key" => "value" })
+        response(:json, 'key' => 'value')
       end
 
       def test_text
@@ -24,7 +24,7 @@ RSpec.describe Controller do
   it 'json matches request' do
     expect(test_json).to eq [
       200,
-      {'Content-Type' => 'application/json'},
+      { 'Content-Type' => 'application/json' },
       ['{"key":"value"}']
     ]
   end
@@ -32,7 +32,7 @@ RSpec.describe Controller do
   it 'text matches request' do
     expect(test_text).to eq [
       200,
-      {'Content-Type' => 'text/plain'},
+      { 'Content-Type' => 'text/plain' },
       ['text']
     ]
   end
