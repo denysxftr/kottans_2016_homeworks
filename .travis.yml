@@ -6,3 +6,8 @@ script:
   - cd hw3
   - bundle install
   - bundle exec rspec spec
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_API
+  app: kottans-hw4
