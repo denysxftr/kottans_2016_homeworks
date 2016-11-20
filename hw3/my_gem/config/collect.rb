@@ -17,3 +17,7 @@ require './app/application'
 # require 'gem_name' # => to add required gem
 # require './file/path' # => to add required file
 #
+
+##
+# End of our collect.rb file
+#

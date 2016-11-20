@@ -1,3 +1,0 @@
-require './collect'
-
-run MyApp
