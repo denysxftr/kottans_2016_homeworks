@@ -1,9 +1,5 @@
-require "asdetmin/version"
+require 'asdetmin/version'
+require 'asdetmin/router'
+require 'asdetmin/controller'
 
-module Asdetmin
-  class Router
-    def call(env)
-      [200, { "Content-Type" => "text/html" }, ["Hello"]]
-    end
-  end
-end
+
