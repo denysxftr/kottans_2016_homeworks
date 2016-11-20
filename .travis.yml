@@ -6,7 +6,9 @@ script:
   - cd hw3 && bundle install && bundle exec rspec spec
 
 before_deploy:
-  - cd hw3
+  - pwd
+  - ls
+  - cd $TRAVIS_BUILD_DIR/hw3
 
 deploy:
   provider: heroku
