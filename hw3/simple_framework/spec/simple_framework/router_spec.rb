@@ -1,20 +1,16 @@
-RSpec.describe Router do
+require "spec_helper"
+
+describe SimpleFramework::Router do
+
   subject do
-    Router.new do
+    SimpleFramework::Router.new do
       get '/test', ->(env) { [200, {}, ['get test']] }
       post '/test', ->(env) { [200, {}, ['post test']] }
 
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
       get '/post/:name', ->(env) { [200, {}, ['post show page']] }
     end
   end
+
 
   context 'when request is GET' do
     let(:env) { { 'REQUEST_PATH' => '/test', 'REQUEST_METHOD' => 'GET'} }
@@ -31,7 +27,7 @@ RSpec.describe Router do
     end
 
     it 'matches request to uknown route' do
-      expect(subject.call(unknown_route)).to eq [404, {}, ['page not found']]
+      expect(subject.call(unknown_route)).to eq [404, {}, ['not found']]
     end
   end
 
