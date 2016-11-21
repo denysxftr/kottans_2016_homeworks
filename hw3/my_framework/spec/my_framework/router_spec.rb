@@ -1,4 +1,4 @@
-require './lib/router'
+require './lib//my_framework/router'
 
 RSpec.describe Router do
   subject do

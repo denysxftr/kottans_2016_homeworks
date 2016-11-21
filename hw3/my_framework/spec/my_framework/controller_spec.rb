@@ -1,7 +1,8 @@
-require './lib/controller'
+require './lib/my_framework/controller'
 require 'Rack'
 require 'oj' 
 # no idea why i have to require all of this here but it doesn't work if don't
+# throws bazzilion of warnings though
 
 RSpec.describe Controller do
   let(:controller) do
