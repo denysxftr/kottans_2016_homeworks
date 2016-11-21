@@ -1,3 +1,5 @@
+require './lib//my_framework/router'
+
 RSpec.describe Router do
   subject do
     Router.new do
