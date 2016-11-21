@@ -3,3 +3,7 @@ rvm:
   - 2.3.1
 script:
   - bash check.sh
+deploy:
+  provider: heroku
+  api_key: 21886793-59c9-4703-9028-0619d407746d
+  app: HW2
