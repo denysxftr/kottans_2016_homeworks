@@ -1,9 +1,17 @@
 class Router
   def call(env)
-    @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    route_regexp, action = @routes[env['REQUEST_METHOD']].detect do |(key, _value)|
+      key =~ env['REQUEST_PATH']
+    end
+    if action
+      env['params'] = parse_params(route_regexp, env['REQUEST_PATH'])
+      action.call(env)
+    else
+      page_not_found.call(env)
+    end
   end
 
-private
+  private
 
   def initialize(&block)
     @routes = {}
@@ -20,6 +28,20 @@ private
 
   def match(http_method, path, rack_app)
     @routes[http_method] ||= {}
-    @routes[http_method][path] = rack_app
+    @routes[http_method][path_regexp(path)] = rack_app
+  end
+
+  def page_not_found
+    ->(env) { [404, {}, ['Page not found']] }
+  end
+
+  def path_regexp(path)
+    path = path.gsub(/:(\w+)/, '(?<\1>[\w-]+)')
+    Regexp.new("\\A#{path}\\Z")
+  end
+
+  def parse_params(route_regexp, request_path)
+    data = route_regexp.match(request_path)
+    data.names.zip(data.captures).to_h
   end
 end

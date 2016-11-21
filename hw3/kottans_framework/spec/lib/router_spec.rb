@@ -1,19 +1,19 @@
-RSpec.describe Router do
+RSpec.describe KottansFramework::Router do
   subject do
-    Router.new do
+    KottansFramework::Router.new do
       get '/test', ->(env) { [200, {}, ['get test']] }
       post '/test', ->(env) { [200, {}, ['post test']] }
       get '/test/:message', ->(env) { [200, {}, ['test with params']] }
       get '/post/:name', ->(env) do
         [200,
          {},
-         [env['params']['name'], 'post show page']]
+         [env['router.params']['name'], 'post show page']]
       end
 
       get '/post/:name/comment/:id', ->(env) do
         [200,
          {},
-         [env['params']['name'], env['params']['id'], 'post comment show page']]
+         [env['router.params']['name'], env['router.params']['id'], 'post comment show page']]
       end
     end
   end
