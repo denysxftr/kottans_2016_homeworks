@@ -25,13 +25,15 @@ private
   end
 
   def create_path_pattern(path)
-    subpathes_array = path.split('/')
-    subpathes_array.delete_at(0)
-    pattern = ''
-    subpathes_array.each do |element|
-      pattern << (element.start_with?(':') ? '\/\w+' : '\/' + element)
-    end
-    pattern << '\Z'
+    # subpathes_array = path.split('/')
+    # subpathes_array.delete_at(0)
+    # pattern = ''
+    # subpathes_array.each do |element|
+    #   pattern << (element.start_with?(':') ? '\/\w+' : '\/' + element)
+    # end
+    # pattern << '\Z'
+    path.gsub(/:[\w-]+/, '[\w-]+')
+    path << '\Z'
   end
 
   def find_route(env)
