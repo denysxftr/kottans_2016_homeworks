@@ -1,8 +1,10 @@
 RSpec.describe Controller do
     subject do
         Controller.new do
-            text ['text/plain', ->(c) { c.to_s }]
-            json ['application/json', ->(c) { Oj.dump(c) }]
+            RESPONSE_TYPES = {
+                text: ['text/plain', ->(c) { c.to_s }],
+                json: ['application/json', ->(c) { Oj.dump(c) }]
+            }.freeze
         end
     end
 end
