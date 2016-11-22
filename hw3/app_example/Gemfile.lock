@@ -1,3 +1,9 @@
+PATH
+  remote: ../asdetmin
+  specs:
+    asdetmin (0.1.0)
+      rack
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -22,9 +28,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  asdetmin!
   oj
   rack
   rspec
 
 BUNDLED WITH
-   1.13.5
+   1.13.2

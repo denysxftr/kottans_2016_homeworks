@@ -1,6 +1,8 @@
-RSpec.describe Router do
+require "spec_helper"
+
+RSpec.describe Asdetmin::Router do
   subject do
-    Router.new do
+    Asdetmin::Router.new do
       # posts
       get     '/posts',                    ->(env) { [200, {}, ['shows the posts'   ]] }             # /posts
       post    '/posts',                    ->(env) { [200, {}, ['creates a post'    ]] }             # /posts
@@ -16,7 +18,6 @@ RSpec.describe Router do
       delete  '/posts/:name/comments/:id', ->(env) { [200, {}, ['destroys a comment']] }              # /posts/1/comments/1
     end
   end
-
   let(:env) { env = { 'REQUEST_PATH' => '/', 'REQUEST_METHOD' => '' } }
 
   describe 'positive specs for' do
@@ -100,5 +101,4 @@ RSpec.describe Router do
       end
     end
   end
-
 end

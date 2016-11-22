@@ -1,7 +1,5 @@
-require 'rack'
-require 'oj'
-require './lib/controller'
-require './lib/router'
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require "asdetmin"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
