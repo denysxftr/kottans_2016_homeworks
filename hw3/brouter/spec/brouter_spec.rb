@@ -44,6 +44,13 @@ RSpec.describe Brouter do
         expect(subject.call(env)).to eq [200, {}, ['edit post show page']]
       end
     end
+
+    it 'saves router params' do
+      env = { 'REQUEST_PATH' => "/post/frog", 'REQUEST_METHOD' => 'GET' }
+      subject.call(env)
+      expect(env['router.params']).to eq({'name' => 'frog'})
+
+    end
   end
 
   context 'when request is POST' do

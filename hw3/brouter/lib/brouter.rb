@@ -37,7 +37,10 @@ module Brouter
       path = env['REQUEST_PATH']
       return routes_req_method[path].first if routes_req_method[path].is_a?(Proc) # return app if the route is simple (without pattern)
 
-      rack_app = process_path(routes_req_method, path)
+      array = process_path(routes_req_method, path)
+      rack_app = array[0]
+      env['router.params'] = array[1]
+
       return get_controller_action(rack_app) if rack_app.is_a?(String) # call respective controller if needed
       rack_app # return app for patterned route or 404 if there is no such route
     end
@@ -60,7 +63,7 @@ module Brouter
             if part[0] == ':' or part == env_path_array[i]
               route_exists = true
 
-              params_hash[part] = env_path_array[i] if part[0] == ':' # save params if there are some
+              params_hash[part[1..-1]] = env_path_array[i] if part[0] == ':' # save params if there are some
             else # break the iteration if path parts don't match with each other
               route_exists = false
               break
@@ -68,12 +71,12 @@ module Brouter
           end
 
           array << params_hash unless params_hash.empty? # add params to @routes
-          return array[0] if route_exists
+          return array if route_exists
         end
 
       end
 
-      NotFound
+      [NotFound, {}]
     end
 
     def get_controller_action(controller_and_action)
