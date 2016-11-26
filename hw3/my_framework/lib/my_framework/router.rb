@@ -42,7 +42,21 @@ class MyFramework::Router
   end
 
   def match(http_method, path, rack_app)
+    rack_app = get_controller_action(rack_app) if rack_app.is_a?(String)
     @routes[http_method] ||= {}
     @routes[http_method][path] = rack_app
+  end
+
+  def get_controller_action(str)
+    controller_name, action_name = str.split('#')
+    controller_name = to_upper_camel_case(controller_name)
+    Kernel.const_get(controller_name).send(:action, action_name)
+  end
+
+  def to_upper_camel_case(str)
+    str
+      .split('/')
+      .map { |part| part.split('_').map(&:capitalize).join }
+      .join('::') + 'Controller'
   end
 end
