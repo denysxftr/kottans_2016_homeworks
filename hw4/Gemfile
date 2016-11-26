@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+gem 'rack'
+gem 'rspec'
+gem 'my_framework', path: '../hw3/my_framework/'
