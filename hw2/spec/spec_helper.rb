@@ -1,5 +1,5 @@
 require 'rack'
-require 'oj'
+require 'oj' #optimized json
 require './lib/controller'
 require './lib/router'
 

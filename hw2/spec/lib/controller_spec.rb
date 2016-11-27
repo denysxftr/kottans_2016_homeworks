@@ -29,7 +29,7 @@ RSpec.describe Controller do
   end
 
   it 'shows readed param from address line to params hash' do
-    expect(controller.action(:data_params).call(Rack::MockRequest.env_for('/test?some_info=key')))
+    expect(controller.action(:data_params).call(Rack::MockRequest.env_for('/message?some_info=key')))
         .to eq([200, { 'Content-Type' => 'application/json' }, ["{\":some_key\":\"key\"}"]])
   end
 end
