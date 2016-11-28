@@ -1,6 +1,9 @@
 class Router
   def call(env)
-    @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+    app = @routes[env['REQUEST_METHOD']].find do |el|
+      env['REQUEST_PATH'] =~ el[:pattern]
+    end
+    app ? app[:rack_app].call(env) : [404, {}, ['Not found!']]
   end
 
 private
@@ -19,7 +22,11 @@ private
   end
 
   def match(http_method, path, rack_app)
-    @routes[http_method] ||= {}
-    @routes[http_method][path] = rack_app
+    @routes[http_method] ||= []
+    @routes[http_method] << { pattern: pattern(path) , rack_app: rack_app }
+  end
+
+  def pattern(path)
+    Regexp.new("^#{path.gsub(/:\w+/, '\w+')}\/?$")
   end
 end
