@@ -1,6 +1,17 @@
 class Router
   def call(env)
-    @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']].call(env)
+
+   unless env['REQUEST_PATH'] == "/favicon.ico"
+     current_env = ->(env) {[404, {}, ['404']]}
+
+     @routes[env['REQUEST_METHOD']].each { |(key,value)|
+       key_to_reg_exp= key.gsub(/(?<=:)[^\/]+(?=($|\/))/,"[a-zA-Z0-9_]+").gsub(/\/:/,"/")
+       regular_value = Regexp.new /\A#{key_to_reg_exp}\Z/
+       current_env = value if regular_value=~env['REQUEST_PATH']
+     }
+     current_env.call(env)
+   end
+
   end
 
 private

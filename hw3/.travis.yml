@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+- 2.3.1
+script:
+- bash before-deploy.sh
+deploy:
+  provider: heroku
+  api_key:
+    secure: NNdlTVbKxcM0pdHxn79+1zRyDx3umKAa9d3Ka09TLUQkjfNQyINi6dtbwZtfmduOIYlWMTy0ZSfkOzZnAvcwGO9b4unmdnE8FIvxDiKzTH15S9I4BePfB+5Utpa4mbN0UnB8v0GcW1b9+fwnHNQsdwNdr08AvPENEoSMbIjyhAK2IvlQHlqwKR72JvDRfRxwwG7S1s6+pSpAHh9Hl6BBPzCwn5Uf4Lt+Vwwcb9MPQPwpWyXzQk+LF2QIAO23oqb0l6/jcCaEcSw8J2rDPh1gCZnBSDj2JuGtA8URxgemFMPrzaPNDkyo0NZUDmdzHjGFyeD89C/fZ+N5704pg/Osuxl8DP0J/+xavDO/eY9gdskQhfjq91kN2FiBu7/P35pm963YzCwDqlZysxA8MYniR3ST1C9D5q3eluNY0vFEWaHUhi90URuVy3tuLl1b+cOHQ+TKRwYuisyaOPhQF76ERnjHm+jr5k6NIqD+sbBJ5D+uk0dpc4/y4FOYyxnuZ5JGK/TrmMXfCPs1yKgk6KwBa0/RNolIAQ1dmSrjBZxnZNxS0kLXGPrtYAZCrP0xvcy+KY1Wi9KfCtQ1Xao/ASanPxW24/IXiTczXxdsxqxQowkLZRBNBIDLDsev8MKMD1Mg9yeH3wDa22ahTR0i7SR/PYpiURf13g54OsmUrElh998=
+  app: home-work-project
