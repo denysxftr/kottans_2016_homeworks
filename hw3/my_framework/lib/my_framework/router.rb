@@ -12,6 +12,7 @@ class MyFramework::Router
 
   def find_route(env)
     if @routes[env['REQUEST_METHOD']]
+      env['REQUEST_PATH'] ||= env['PATH_INFO']
       return @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']] if @routes[env['REQUEST_METHOD']][env['REQUEST_PATH']]
 
       @routes[env['REQUEST_METHOD']].each do |routes_path, rack_app|
