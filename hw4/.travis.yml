@@ -1,0 +1,12 @@
+sudo: false
+language: ruby
+rvm:
+  - 2.3.1
+before_install: gem install bundler -v 1.13.5
+env:
+  secure: "ER2vjjiN2RKcWcjlCbVVL1m33LwMkssOLYTu0m+MaP1tTi8s0TrDaG6fFURr8JSF+bj1Esw0/FbKwYY2z7+3JkemV562n1ZlWNcJe8z3/UQF6e0MS5k1Cp0Uj3j8B8LgHWiXpNaEvrrmrEAg8YhqblyG8UEH5hXynvD50Srv7wTUm7TPUfuib2vJhBw3B7Ro8R1NPOe93cvY04dMHCbOOKmjdOdmFHj6/kACuy9Gf596PySTJRGd0c83phe//OR88EoiJ6OKsT57s6NiQDawAwturyWHRqsZpJ07oEeKqb9bs1iaPM6G0nA2Nz/EaBPPJEuisvyMOPFnIkNXUzDzk/VaAJh/hGoaoco4Xl8EfcKmf1+LPKuLqdl4EDfO+srnRTLOjDey8up0Zm3QmTU7N4/bLAHfEdRr2jMn5hHypNblHGQTKbXoCc7foY9zkX2zS4qaj7qBpebSuLTxD3XyjaTAPwR/CPH5CIpyvm0w/ep0HXDdmxLawoUoRmjCCZQKB2PB5GHNvK7rfC93Me3GV1jprs5PEV5z4r73r0er6i1kOEbohjTwxiPgNDujnWT9u2UxeVH1mYZzbN0oL/1uNcK4Uex3LTaEs4SWDBmtEF/HOMC1FoYmEI1aJXAjTeQUdqNiJ6vuMss1SszwKdlUyFeW1aKEcc/p4Ae9Mwj2UWM="
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_STAGING_API_KEY
+  app: kottans-app
