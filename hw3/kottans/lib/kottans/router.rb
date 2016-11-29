@@ -25,11 +25,12 @@ class Router
   end
 
   def match(http_method, path, rack_app)
+    rack_app = get_controller_action(rack_app) if rack_app.is_a?(String)
     @routes[http_method] ||= {}
     @routes[http_method][path] = rack_app
     @patterns[path] ||= build_reg(path)
   end
-  
+
   def not_found
     [404, {}, ['Not found']] 
   end
@@ -37,5 +38,21 @@ class Router
   def build_reg(path)
     reg = path.split('/').each { |v| v.gsub!(/:\w+/, '\w+') }.join('/') << '$'
     Regexp.new(reg)
+  end
+
+  def get_controller_action(str)
+    controller_name, action_name = str.split('#') # tests#show => ['tests', 'show']
+    controller_name = to_upper_camel_case(controller_name)
+    Kernel.const_get(controller_name).send(:action, action_name)
+    # controller_name = public_test
+    # action_name = show
+    # PublicTestController.action('show')
+  end
+
+  def to_upper_camel_case(str)
+    str # 'public_pages/tests' => PublicPages::TestsController
+      .split('/') # ['public_pages', 'test']
+      .map { |part| part.split('_').map(&:capitalize).join } # ['PublicPages', 'Test']
+      .join('::') + 'Controller'
   end
 end
