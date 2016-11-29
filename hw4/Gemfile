@@ -4,3 +4,5 @@ gem 'rack'
 gem 'rack-test'
 gem 'rspec'
 gem 'my_framework', path: '../hw3/my_framework/'
+
+gem 'rake', group => :test

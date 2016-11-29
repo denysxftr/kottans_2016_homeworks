@@ -7,5 +7,6 @@ deploy:
   file: "hw4/**/*"
   provider: heroku
   api_key: $HEROKU_KEY
+  app: kottanshw4
   on:
     all_branches: true
