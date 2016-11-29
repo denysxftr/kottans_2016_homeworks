@@ -3,6 +3,7 @@ rvm:
   - 2.3.1
 gemfile:
   - hw4/Gemfile
+script: "bundle exec rspec"
 deploy:
   file: "hw4/**/*"
   provider: heroku
