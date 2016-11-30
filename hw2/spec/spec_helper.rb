@@ -1,4 +1,9 @@
-require './lib/router'
+require 'pry'
+require 'rack'
+require 'oj'
+require_relative '../lib/router'
+require_relative '../lib/controller'
+
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

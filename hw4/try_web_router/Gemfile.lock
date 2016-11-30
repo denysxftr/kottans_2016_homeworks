@@ -24,15 +24,17 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     slop (3.6.0)
+    web_router (0.3.0)
+      oj (~> 2.17)
+      rack (~> 2.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  oj
   pry
-  rack
   rspec
+  web_router
 
 BUNDLED WITH
    1.13.5
