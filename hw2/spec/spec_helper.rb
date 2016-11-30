@@ -1,8 +1,8 @@
 require 'pry'
 require 'rack'
 require 'oj'
-require './web_router/router'
-require './web_router/controller'
+require_relative '../lib/router'
+require_relative '../lib/controller'
 
 
 RSpec.configure do |config|
