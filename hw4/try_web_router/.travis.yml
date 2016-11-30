@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+  - 2.3.1
+script: bundle exec rspec spec
+deploy:
+  provider: heroku
+  api_key: $HEROKU_STAGING_API_KEY
+  app: try-web-router-gem

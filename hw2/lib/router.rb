@@ -1,43 +1,13 @@
-=begin
-@routes[REQUEST_METHOD] has two hashes "simple" and "complex"
-"simple"  - to storage routes without ":" "/test/some_path"
-"complex"  - to storage routes with ":" "/test/:name
-
-@routes = {
-  "GET":
-    "simple": {
-      "/test": RACK_APP_1
-    }
-    "complex": {
-      "/test/:name": RACK_APP_3
-      "/test/:name/:name": RACK_APP_4
-    }
-  "POST": {
-    "simple": {
-      "/test": RACK_APP_2
-      "/test/some_path": RACK_APP_5
-    }
-  }
-}
-=end
-
 class Router
   def call(env)
-    current_method, current_path  = env['REQUEST_METHOD'], env['REQUEST_PATH']
-    # simple routes handling
-    return routes[current_method]['simple'][current_path].call(env) if simple_path?(current_path, current_method)
-    # complex routes handling
-    path = complex_path?(current_path, current_method)
-    return routes[current_method]['complex'][path].call(env) if path
-    # 404 routes handling
-    ->(env) { [404, {}, ['not found']] }.call(env)
+    find_route(env).call(env)
   end
 
 private
   attr_reader :routes
 
   def initialize(&block)
-    @routes = {}
+    @routes = []
     instance_exec(&block)
   end
 
@@ -50,49 +20,45 @@ private
   end
 
   def match(http_method, path, rack_app)
-    routes[http_method] ||= {}
-    routes[http_method]['complex'] ||= {}
-    routes[http_method]['simple'] ||= {}
-
-    if path =~ /\/:\w/
-      routes[http_method]['complex'][path] = rack_app
-    else
-      routes[http_method]['simple'][path] = rack_app
-    end
+    rack_app = get_controller_action(rack_app) if rack_app.is_a? String
+    routes << { pattern: path, app: rack_app, regexp: path_to_regexp(path), method: http_method}
   end
 
-  def simple_path?(current_path, current_method)
-    routes[current_method]['simple'].keys.each do |path|
-      return true if current_path == path
-    end
-
-    false
+  def get_controller_action(str)
+    controller_name, action_name = str.split('#') # tests#show => ['tests', 'show']
+    controller_name = to_upper_camel_case(controller_name)
+    Kernel.const_get(controller_name).send(:action, action_name)
   end
 
-  def complex_path?(current_path, current_method)
-    routes[current_method]['complex'].keys.each do |path|
-      path_array, current_path_array = path.split('/'), current_path.split('/')
-      next if different_path_size?(path_array, current_path_array) || different_pathes?(path_array, current_path_array)
+  def to_upper_camel_case(str)
+    str # 'public_pages/tests' => PublicPages::TestsController
+      .split('/') # ['public_pages', 'test']
+      .map { |part| part.split('_').map(&:capitalize).join } # ['PublicPages', 'Test']
+      .join('::') + 'Controller'
+  end
 
-      return path
+  def find_route(env)
+    routes.each do |route|
+      if env['REQUEST_METHOD'] == route[:method] && env['REQUEST_PATH'] =~ route[:regexp]
+        env['router.params'] = extract_params(route[:pattern], env['REQUEST_PATH'])
+        return route[:app]
+      end
     end
 
-    nil
+    ->(_env) { [404, {}, ['not found']] }
   end
 
-  def different_path_size?(path_array, current_path_array)
-    path_array.size != current_path_array.size
+  def path_to_regexp(path)
+    Regexp.new('\A' + path.gsub(/:[\w-]+/, '[\w-]+') + '\Z')
   end
 
-  def different_pathes?(path_array, current_path_array)
-    path_array.each_with_index do |_,index|
-      return true unless same_items_of_path?(path_array[index], current_path_array[index])
-    end
-
-    false
-  end
-
-  def same_items_of_path?(path_item, current_path_item)
-    path_item == current_path_item || (path_item =~ /:\w/ && current_path_item =~ /\w/)
+  # pattern: "post/:name", route: "post/about_ruby"
+  def extract_params(pattern, path)
+    pattern
+      .split('/') # ['post', ':name']
+      .zip(path.split('/')) # [['post', 'post'],[':name', 'post']]
+      .reject { |e| e.first == e.last } # [[':name', 'post']]
+      .map { |e| [e.first[1..-1], e.last] } # [['name', 'post']]
+      .to_h
   end
 end
