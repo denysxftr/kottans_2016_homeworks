@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Web_Router</title>
+  <style type="text/css">
+    table {
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1>The simplest site to show how gem "web_router" works.</h1>
+
+<table>
+  <tr>
+    <th>Path pattern</td>
+    <th>Method</td>
+    <th>Controller</td>
+    <th>Action</td>
+    <th>Returns</td>
+    <th>Description</td>
+  </tr>
+  <tr>
+    <td>/</td>
+    <td>GET</td>
+    <td>Home</td>
+    <td>root</td>
+    <td>views/index.html.erb</td>
+    <td>Start page</td>
+  </tr>
+  <tr>
+    <td>/testing</td>
+    <td>GET</td>
+    <td>Home</td>
+    <td>show</td>
+    <td>request params in Hash form</td>
+    <td>Parses query string "?q=w&a=s" to {"q":"w","a":"s"}</td>
+  </tr>
+  <tr>
+    <td>/posts/:name</td>
+    <td>GET</td>
+    <td>Home</td>
+    <td>test</td>
+    <td>:name parameter</td>
+    <td>Name is: :name</td>
+  </tr>
+  <tr>
+    <td>/test</td>
+    <td>GET</td>
+    <td></td>
+    <td></td>
+    <td>"get test"</td>
+    <td>with status 200</td>
+  </tr>
+  <tr>
+    <td>/test</td>
+    <td>POST</td>
+    <td></td>
+    <td></td>
+    <td>"post test"</td>
+    <td>with status 200</td>
+  </tr>
+  <tr>
+    <td>/test</td>
+    <td>PUT</td>
+    <td></td>
+    <td></td>
+    <td>"put test"</td>
+    <td>with status 200</td>
+  </tr>
+  <tr>
+    <td>/test</td>
+    <td>DELETE</td>
+    <td></td>
+    <td></td>
+    <td>"delete test"</td>
+    <td>with status 200</td>
+  </tr>
+</table>
+
+</body>
+</html>
