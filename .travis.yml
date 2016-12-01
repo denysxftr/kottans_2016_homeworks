@@ -5,10 +5,10 @@ gemfile:
   - hw4/Gemfile
 script: "cd hw4 && bundle exec rspec"
 deploy:
-  file: "hw4/**/*"
+  #file: "hw4/**/*"
   provider: heroku
   api_key: $HEROKU_KEY
-  skip_cleanup: true
+  #skip_cleanup: true
   app: kottanshw4
   on:
     all_branches: true
