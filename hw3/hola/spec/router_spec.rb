@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe Router do
+RSpec.describe Hola::Router do
   subject do
-    Router.new do
+    Hola::Router.new do
       get '/', ->(env) { [200, {}, ['root path']] }
       post '/', ->(env) { [200, {}, ['root path']] }
       get '/test', ->(env) { [200, {}, ['get test']] }

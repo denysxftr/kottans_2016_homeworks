@@ -1,8 +1,7 @@
 require 'spec_helper'
-
-RSpec.describe Controller do
+RSpec.describe Hola::Controller do
   let(:controller) do
-    Class.new(Controller) do
+    Class.new(Hola::Controller) do
       def text_action
         response(:text, 'test')
       end
