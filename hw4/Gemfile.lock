@@ -1,0 +1,41 @@
+PATH
+  remote: ./my_framework/
+  specs:
+    my_framework (0.1.0)
+      oj (~> 2.16)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.2.5)
+    oj (2.18.0)
+    rack (2.0.1)
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rake (11.3.0)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.4)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  my_framework!
+  rack
+  rack-test
+  rake
+  rspec
+
+BUNDLED WITH
+   1.13.2
