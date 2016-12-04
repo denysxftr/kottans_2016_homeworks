@@ -2,7 +2,8 @@ module WebConfig
   class Controller
     RESPONSE_TYPES = {
       text: ['text/plain', ->(c) { c.to_s }],
-      json: ['application/json', ->(c) { Oj.dump(c) }]
+      json: ['application/json', ->(c) { Oj.dump(c) }],
+      html: ['text/html', ->(c) { File.read(c) }]
     }.freeze
 
     def call(env)
