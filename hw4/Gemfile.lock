@@ -1,5 +1,5 @@
 PATH
-  remote: ../hw3/my_framework/
+  remote: ./my_framework/
   specs:
     my_framework (0.1.0)
       oj (~> 2.16)
@@ -8,7 +8,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    oj (2.17.5)
+    oj (2.18.0)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
