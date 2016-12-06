@@ -2,8 +2,9 @@ RSpec.describe Router do
   subject do
     Router.new do
       get '/test', ->(env) { [200, {}, ['get test']] }
-      post '/test', ->(env) { [200, {}, ['post test']] }
       get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+      get '/posts/:name/page/:page', -> (env) { [200, {}, ['post show page']] }
+      post '/test', ->(env) { [200, {}, ['post test']] }
     end
   end
 
@@ -14,11 +15,11 @@ RSpec.describe Router do
       expect(subject.call(env)).to eq [200, {}, ['get test']]
     end
 
-    context 'when page not found' do
+    context 'when page is not found' do
       let(:env) { { 'REQUEST_PATH' => '/not_found', 'REQUEST_METHOD' => 'GET'} }
 
       it 'returns 404' do
-        expect(subject.call(env)).to eq [404, {}, ['Not Found']]
+        expect(subject.call(env)).to eq [404, {}, ['not found']]
       end
     end
 

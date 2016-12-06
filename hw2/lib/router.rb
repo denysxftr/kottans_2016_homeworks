@@ -1,24 +1,23 @@
 class Router
   def call(env)
-    request_method = env['REQUEST_METHOD']
-    request_path = env['REQUEST_PATH']
-    routes = @routes[request_method][request_path]
-
-    if routes
-      routes.call(env)
-    elsif request_path.match(/\/post\/(\d+|\w+)/)
-      match(request_method, request_path, ->(env) { [200, {}, ['post show page']] })
-      @routes[request_method][request_path].call(env)
-    else
-      [404, {}, ['Not Found']]
-    end
+    find_route(env).call(env)
   end
 
 private
 
   def initialize(&block)
-    @routes = {}
+    @routes = []
     instance_exec(&block)
+  end
+
+  def find_route(env)
+    @routes.each do |route|
+      if env['REQUEST_METHOD'] == route[:method] && env['REQUEST_PATH'] =~ route[:regexp]
+        return route[:app]
+      end
+    end
+
+    return ->(_env) {[404, {}, ['not found']]}
   end
 
   def get(path, rack_app)
@@ -30,7 +29,10 @@ private
   end
 
   def match(http_method, path, rack_app)
-    @routes[http_method] ||= {}
-    @routes[http_method][path] = rack_app
+    @routes << { pattern: path, app: rack_app, regexp: path_to_regexp(path), method: http_method }
+  end
+
+  def path_to_regexp(path)
+    Regexp.new("^#{path.gsub(/:\w+/, '\w+')}/?$")
   end
 end
