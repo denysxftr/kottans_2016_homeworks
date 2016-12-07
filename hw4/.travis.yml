@@ -1,0 +1,24 @@
+rvm:
+  - 2.3.1
+
+# services:
+#   - postgres:9.5
+#
+before_install: gem install bundler -v 1.13.5
+  env:
+    secure: "WZ2380o5rDP+1Lm9GY19cEilki0PJ8xPI2hMJFFlrtRCd1j+IBj37BmwGkX8vsA1R+a8BetDX5YCMnLd3FNorMHbEY35VOG7X/Bx9hCRbWNoYITFIULFZafEItfSAQQGOj7ZFisyIYer
+eid64+CQAcEVziMIpvTWPpZXC8wduqrGka1N0mOnFScUMXCOJExGr7l500VlPE5WYix2xSbdZuS86dspRYs9lTmHHq+Z/NiosShYxMmcs56eryGoJCR7LQO+M1f7DQe8mIKDpEWGgota9bjql1WViWt
+zb2aNsOJcJvae7JLglM1wEbnpPO452FNUUTkp4WGPQY5y2Drf/hvwC6pUt6WNaXhJufwOOYeeq3AV4eVQT6eoI3MrlMc5cRcpiejCtRJlZrq0DQwMrhGxEZoffAchIogZYEfRObbzTLe8h0fUiBgfEd
+ltya3UbTKvYQySx+ipMtbupcHykMPQmqUBbnMZbeTAyVP+oQnWPD8uXIt5c9D8wTGkj+n57j5ZQlnGTF0D0AV/FyzyeZJu7FEmee8xU0GhluV5a0AuJOPhib1cI8sIfyThSKYdRelNMQEzgYjJwUByB
+5Ycz7OSgvM4Ipj9oiyoqsqQiW8K1wtCChjoPoju1s6eDf4tJgGSXnbEGOe9Y1cMcV5lBD5+W8qN8MfYznJkKjJrOQ8="
+
+before_script:
+  - "cp .env.travis .env"
+#   - "bundle exec rake db:drop db:create db:migrate"
+
+script: "RAILS_ENV=test bundle exec rake test"
+
+deploy:
+  provider: heroku
+  api_key: $HEROKU_STAGING_API_KEY
+  # app: test-app-kroosh
