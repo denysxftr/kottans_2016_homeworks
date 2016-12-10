@@ -1,0 +1,35 @@
+GIT
+  remote: https://github.com/xwzsd/hola.git
+  revision: 1f53401ab62e243b3c8421edab04c57390492734
+  specs:
+    hola (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.2.5)
+    rack (2.0.1)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.4)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hola (= 0.1.0)!
+  rack
+  rspec
+
+BUNDLED WITH
+   1.13.6
