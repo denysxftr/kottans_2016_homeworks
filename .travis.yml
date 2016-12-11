@@ -7,8 +7,7 @@ script: "cd hw4 && bundle exec rspec"
 deploy:
   file: "hw4/**/*"
   provider: heroku
-  api_key:
-    secure: "HEROKU_API_KEY"
+  api_key: $HEROKU_API_KEY
   app: kottansapp
   on:
     all_branches: true
