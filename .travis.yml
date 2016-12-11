@@ -1,9 +1,8 @@
-
 language: ruby
 rvm:
-  - 2.3.1
+- 2.3.1
 gemfile:
-  - hw4/Gemfile
+- hw4/Gemfile
 script: "cd hw4 && bundle exec rspec"
 deploy:
   file: "hw4/**/*"
