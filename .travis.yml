@@ -1,5 +1,14 @@
+
 language: ruby
 rvm:
   - 2.3.1
-script:
-  - bash check.sh
+gemfile:
+  - hw4/Gemfile
+script: "cd hw4 && bundle exec rspec"
+deploy:
+  file: "hw4/**/*"
+  provider: heroku
+  api_key: $HEROKU_API_KEY
+  app: kottansapp
+  on:
+    all_branches: true
