@@ -1,4 +1,3 @@
-
 class ExampleController < Hola::Controller
   def new
     response(:text, "Request method: #{request.request_method}")
@@ -10,6 +9,6 @@ class ExampleController < Hola::Controller
 
   Application = Hola::Router.new do
     get '/', 'example#new'
-    get '/blog/post/:id', 'example#show'
+    get '/blog/:post/:id', 'example#show'
   end
 end
