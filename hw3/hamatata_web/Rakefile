@@ -1,0 +1,11 @@
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task :default => :spec
+
+desc 'Run specs tagged :wip'
+RSpec::Core::RakeTask.new('wip') do |t|
+  t.rspec_opts = '--tag wip --tag ~skip'
+end
