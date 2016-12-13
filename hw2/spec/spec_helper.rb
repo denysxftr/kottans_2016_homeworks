@@ -1,3 +1,6 @@
+require 'rack'
+require 'oj' #optimized json
+require './lib/controller'
 require './lib/router'
 
 RSpec.configure do |config|

@@ -4,15 +4,10 @@ RSpec.describe Router do
       get '/test', ->(env) { [200, {}, ['get test']] }
       post '/test', ->(env) { [200, {}, ['post test']] }
 
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
-      get '/post/:name', ->(env) { [200, {}, ['post show page']] }
+      get '/users/5', ->(env) { [200, {}, ['get /users/:id']] }
+      get '/users/5/comments/2/rating/4', ->(env) { [200, {}, ['get /users/:id/comments/:comment/rating/:rating']] }
+      get '/users/articles/14', ->(env) { [200, {}, ['get /users/articles/:title']]}
+      get '/', ->(env) { [404, {}, ['page not found']] }
     end
   end
 
@@ -31,4 +26,37 @@ RSpec.describe Router do
       expect(subject.call(env)).to eq [200, {}, ['post test']]
     end
   end
+
+  context 'router by pattern /users/:id' do
+    let(:env) { { 'REQUEST_PATH' => "/users/5", 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['get /users/:id']]
+    end
+  end
+
+  context 'router by pattern /users/:id/comments/:comment/rating/:rating' do
+    let(:env) { { 'REQUEST_PATH' => "/users/5/comments/2/rating/4", 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['get /users/:id/comments/:comment/rating/:rating']]
+    end
+  end
+
+  context 'router by pattern /users/articles/:title' do
+    let(:env) { { 'REQUEST_PATH' => "/users/articles/14", 'REQUEST_METHOD' => 'GET'} }
+
+    it 'matches request' do
+      expect(subject.call(env)).to eq [200, {}, ['get /users/articles/:title']]
+    end
+  end
+
+  context 'when path has parameter' do
+    let(:env) { { 'REQUEST_PATH' => "/", 'REQUEST_METHOD' => 'GET'} }
+
+    it 'returns 404' do
+      expect(subject.call(env)).to eq [404, {}, ['page not found']]
+    end
+  end
+
 end
