@@ -1,9 +1,8 @@
-PATH
-  remote: ./source/simple_f_w
+GIT
+  remote: https://github.com/babayinc/simple_f_w.git
+  revision: 2f36889b33f70c13cb7a07945b3f89d4585f4c3d
   specs:
     simple_f_w (0.1.0)
-      oj
-      rack
 
 GEM
   remote: https://rubygems.org/
@@ -11,6 +10,8 @@ GEM
     diff-lcs (1.2.5)
     oj (2.17.5)
     rack (2.0.1)
+    rack-test (0.6.3)
+      rack (>= 1.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -29,6 +30,9 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  oj
+  rack
+  rack-test
   rspec
   simple_f_w!
 

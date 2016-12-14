@@ -1,5 +1,8 @@
 # frozen_string_literal: true
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "rspec"
-gem "simple_f_w", path: "./source/simple_f_w"
+gem 'oj'
+gem 'rack'
+gem 'rack-test'
+gem 'rspec'
+gem 'simple_f_w', git: 'https://github.com/babayinc/simple_f_w.git'

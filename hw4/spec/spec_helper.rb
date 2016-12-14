@@ -1,4 +1,4 @@
-require './source/simple_f_w/lib/simple_f_w/router'
+require './main'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -17,9 +17,7 @@ RSpec.configure do |config|
 
   config.warnings = true
 
-  if config.files_to_run.one?
-    config.default_formatter = 'doc'
-  end
+  config.default_formatter = 'doc' if config.files_to_run.one?
 
   config.profile_examples = 10
 

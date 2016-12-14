@@ -1,5 +1,5 @@
+# Controler
 class Controller
-
   RESPONSE_TYPES = {
     text: ['text/plain', ->(c) { c.to_s }],
     json: ['application/json', ->(c) { Oj.dump(c) }]
@@ -17,7 +17,8 @@ class Controller
     proc { |env| new(action_name).call(env) }
   end
 
-private
+  private
+
   attr_reader :request
 
   def initialize(action_name)

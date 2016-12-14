@@ -1,12 +1,13 @@
 require 'simple_f_w'
 
+# TestController
 class TestController < Controller
   def show
     response(:json, params)
   end
 
   def test
-    response(:text, "Hello world!")
+    response(:text, 'Hello world!')
   end
 end
 
