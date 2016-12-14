@@ -42,7 +42,7 @@ module SimpleRouter
     def get_controller_action(str)
       controller_name, action_name = str.split('#')
       controller_name = to_upper_camel_case(controller_name)
-      Kernel.const_get("SimpleRouter::#{controller_name}").send(:action, action_name)
+      Kernel.const_get("#{controller_name}").send(:action, action_name)
     end
 
     def to_upper_camel_case(str)

@@ -1,3 +1,3 @@
-require './lib/simple_router'
+require './support/test_app'
 
-run SimpleRouter::Application
+run Application
