@@ -1,9 +1,18 @@
+PATH
+  remote: .
+  specs:
+    simple_router (0.1.0)
+      oj
+      rack
+      rspec
+
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
     oj (2.17.5)
     rack (2.0.1)
+    rake (10.5.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -22,9 +31,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  oj
-  rack
+  bundler (~> 1.13)
+  rake (~> 10.0)
   rspec
+  simple_router!
 
 BUNDLED WITH
-   1.13.5
+   1.13.6
