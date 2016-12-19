@@ -30,13 +30,14 @@ assert(
 
 assert(
   expect: sequence.map(&:to_s),
-  to_equal: ["1"],
+  to_equal: ['1'],
   text: 'map works for one element'
 )
 
 sequence = Fibonacci.new(10)
 assert(
   expect: sequence.map(&:to_s),
-  to_equal: ["1", "1", "2", "3", "5", "8", "13", "21", "34", "55"],
+  # to_equal: ['1', '1', '2', '3', '5', '8', '13', '21', '34', '55'],
+  to_equal: %w(1 1 2 3 5 8 13 21 34 55),
   text: 'map works for many elements'
 )

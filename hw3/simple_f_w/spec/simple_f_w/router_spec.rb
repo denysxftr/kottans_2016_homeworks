@@ -1,17 +1,10 @@
-RSpec.describe Router do
+require 'spec_helper'
+
+describe Router do
   subject do
     Router.new do
       get '/test', ->(env) { [200, {}, ['get test']] }
       post '/test', ->(env) { [200, {}, ['post test']] }
-
-      ##
-      # TODO: router should match path by pattern like
-      # Pattern: /posts/:name
-      # Paths:
-      # /post/about_ruby
-      # /post/43
-      # Cover this with tests.
-      #
       get '/post/:name', ->(env) { [200, {}, ['post show page']] }
     end
   end
@@ -49,9 +42,9 @@ RSpec.describe Router do
   end
 
   context 'when request has Pattern: /post/43' do
-    let(:env) { { 'REQUEST_PATH' => '/post/43', 'REQUEST_METHOD' => 'GET' } }
+    let(:env) { { 'REQUEST_PATH' => '/post/43', 'REQUEST_METHOD' => 'GET'} }
 
-    it 'returns /post/about_ruby' do
+    it 'returns /post/43' do
       expect(subject.call(env)).to eq [200, {}, ['post show page']]
     end
   end
