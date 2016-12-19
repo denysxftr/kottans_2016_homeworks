@@ -1,10 +1,11 @@
 language: ruby
 rvm:
-  - 2.3.1
-
-script: "bundle exec rspec"
-
+- 2.3.1
+script: bundle exec rspec
 deploy:
   provider: heroku
-  api_key: $HEROKU_API_KEY
-  # app: test-app-kroosh
+  api_key:
+    secure: ucPFJ+QkgxZPedmGlXIoT21wxm5Bv5CQJLX/9wR/RycRr4mm1NslrJsDPQdwFDHjBRkSx3z+4kZ9EzN59LnQgHRKTjGlLi0J+96kRzyi0TxdA7hUxWFPRbMpJe4TCD017r3xYhkK7AZeI2uy3MLlU5WBmYrnZ+gzOo/b5ziJOoke/WDHt2sTNtDZVu2Xsc+/IkCvVcRy+COYdecNM3SyUMLySEHEI/lXSqndqfW1TjT76bFJpA+LS6Ys82EuHlmIsSlvED4auTthBb5C6NVfHnK1R7NTHvx6OgmPHwkXylQPuyF2YdKS81X/hloAijf69W7qJoxm5BmCc0lPHGdDXF+B8Fp+Tq2o6lOSchGn0K7nqyOw1gofB9pdubmxwZ9R4b34ib/vr/TQ9w3v2wblkSJaoVuEQ/WlBno9hnbrG/zlDeWitiygLsBPDoTEAqxeuJBaNz+i/LFikLTzQT5NVIVV9z91iMBSYlC+0l9/e8tQcuEO7YzUOYMKPT6glHGLYP92i8oA/uH9URk3DMC54U+Va/omZFhYKoqgPCdKD7SmyPiBZnwLcLPwssobDQ4lmRLJ+nvc4MlQPdUD6K9kf4NrrpLlM9z8FpanZZKeONZpKTcPImZOs3q+ZB0CPnVDT4fV0HAjFZJ82Dhx5c54i/ui7iPm3j35US1Zw9JVR9M=
+  app: hw4simplefw
+  on:
+    repo: babayinc/hw4
